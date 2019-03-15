@@ -7,6 +7,7 @@ import java.util.List;
 import com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidator;
 import com.github.salilvnair.jsonprocessor.request.type.JsonElementType;
 import com.github.salilvnair.jsonprocessor.request.validator.core.JsonRequestValidator;
+import com.github.salilvnair.jsonprocessor.request.validator.main.AlphaNumericValidator;
 import com.github.salilvnair.jsonprocessor.request.validator.main.ConditionalValidator;
 import com.github.salilvnair.jsonprocessor.request.validator.main.CustomMethodValidator;
 import com.github.salilvnair.jsonprocessor.request.validator.main.DateValidator;
@@ -73,6 +74,9 @@ public class JsonValidatorFactory {
 		}
 		if(jsonKeyValidator.numeric()) {
 			validators.add(new NumericValidator(property));
+		}
+		if(jsonKeyValidator.alphaNumeric()) {
+			validators.add(new AlphaNumericValidator(property));
 		}
 		if(jsonKeyValidator.email()) {
 			validators.add(new EmailValidator(property));

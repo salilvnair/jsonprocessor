@@ -31,7 +31,7 @@ public class EmailValidator extends BaseJsonRequestValidator implements JsonRequ
 		boolean isFieldTypeEmail = jsonFieldKeyValidator.email();
 		boolean invalidEmail = false;
 		if(isFieldTypeEmail) {
-			if((jsonFieldKeyValidator.nonNull() && fieldValue==null)  || ((jsonFieldKeyValidator.nonEmpty()||jsonFieldKeyValidator.nonNull()) && EMPTY_STRING.equals(fieldValue))){
+			if((!jsonFieldKeyValidator.allowNull() && fieldValue==null)  || ((!jsonFieldKeyValidator.allowEmpty()||!jsonFieldKeyValidator.allowNull()) && EMPTY_STRING.equals(fieldValue))){
 				invalidEmail = true;
 			}
 			else if(fieldValue instanceof String) {

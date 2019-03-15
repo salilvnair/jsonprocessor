@@ -34,7 +34,7 @@ public class PatternValidator extends BaseJsonRequestValidator implements JsonRe
 		}
 		boolean isPatternValid = true;
 		if(fieldHasPattern) {
-			if((jsonFieldKeyValidator.nonNull() && fieldValue==null)  || ((jsonFieldKeyValidator.nonEmpty()||jsonFieldKeyValidator.nonNull()) && EMPTY_STRING.equals(fieldValue))){
+			if((!jsonFieldKeyValidator.allowNull() && fieldValue==null)  || ((!jsonFieldKeyValidator.allowEmpty()||!jsonFieldKeyValidator.allowNull()) && EMPTY_STRING.equals(fieldValue))){
 				isPatternValid = false;
 			}
 		}

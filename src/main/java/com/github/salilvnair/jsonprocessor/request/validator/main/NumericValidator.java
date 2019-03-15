@@ -43,7 +43,7 @@ public class NumericValidator extends BaseJsonRequestValidator implements JsonRe
 		}
 		boolean invalidNumericDetected = false;
 		if(isFieldNumeric) {
-			if((jsonFieldKeyValidator.nonNull() && columnValue==null)  || ((jsonFieldKeyValidator.nonEmpty()||jsonFieldKeyValidator.nonNull()) && EMPTY_STRING.equals(columnValue))){
+			if((!jsonFieldKeyValidator.allowNull() && columnValue==null)  || ((!jsonFieldKeyValidator.allowEmpty()||!jsonFieldKeyValidator.allowNull()) && EMPTY_STRING.equals(columnValue))){
 				invalidNumericDetected = true;
 			}
 			else if(columnValue instanceof String) {

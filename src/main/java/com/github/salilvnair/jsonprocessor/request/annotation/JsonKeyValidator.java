@@ -25,8 +25,8 @@ public @interface JsonKeyValidator {
 	String minDate() default "";
 	String maxDate() default "";
 	boolean email() default false;
-	boolean nonNull() default true;
-	boolean nonEmpty() default true;
+	boolean allowNull() default false;
+	boolean	allowEmpty() default false;
 	String pattern() default "";
 	boolean alphaNumeric() default false;
 	boolean numeric() default false;

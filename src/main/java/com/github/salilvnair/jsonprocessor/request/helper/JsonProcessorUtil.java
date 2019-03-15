@@ -15,7 +15,7 @@ public class JsonProcessorUtil {
 	
 	private List<JsonRequestValidator> jsonRequestValidators;
 	
-	private JsonValidatorContext jsonValidatorContext; 
+	private JsonValidatorContext jsonValidatorContext;
 	
 	public static final String ROOT_PATH = "$";
 		

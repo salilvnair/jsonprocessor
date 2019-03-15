@@ -61,7 +61,7 @@ public class DateValidator extends BaseJsonRequestValidator implements JsonReque
 		}
 		boolean invalidDate = false;
 		if(isFieldTypeDate) {
-			if((jsonFieldKeyValidator.nonNull() && columnValue==null)  || ((jsonFieldKeyValidator.nonEmpty()||jsonFieldKeyValidator.nonNull()) && EMPTY_STRING.equals(columnValue))){
+			if((!jsonFieldKeyValidator.allowNull() && columnValue==null)  || ((!jsonFieldKeyValidator.allowEmpty()||!jsonFieldKeyValidator.allowNull()) && EMPTY_STRING.equals(columnValue))){
 				invalidDate = true;
 			}
 			else if(columnValue instanceof Date) {

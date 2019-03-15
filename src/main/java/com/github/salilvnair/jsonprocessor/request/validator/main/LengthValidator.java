@@ -78,7 +78,7 @@ public class LengthValidator extends BaseJsonRequestValidator implements JsonReq
 				}
 			}
 			if(length>0) {
-				if((jsonFieldKeyValidator.nonNull() && fieldValue==null)  || ((jsonFieldKeyValidator.nonEmpty()||jsonFieldKeyValidator.nonNull()) && EMPTY_STRING.equals(fieldValue))){
+				if((!jsonFieldKeyValidator.allowNull() && fieldValue==null)  || ((!jsonFieldKeyValidator.allowEmpty()||!jsonFieldKeyValidator.allowNull()) && EMPTY_STRING.equals(fieldValue))){
 					lengthViolated = true;
 				}
 				else if(fieldValue instanceof String) {

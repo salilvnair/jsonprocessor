@@ -9,6 +9,7 @@ import com.github.salilvnair.jsonprocessor.request.core.JsonRequest;
 public class Student extends JsonRequest{
 	@JsonKeyValidator(required=true)
 	private String name;
+	@JsonKeyValidator(alphaNumeric=true,allowNull=true)
 	private String section;
 	@JsonKeyValidator(required=true)
 	private String gender;

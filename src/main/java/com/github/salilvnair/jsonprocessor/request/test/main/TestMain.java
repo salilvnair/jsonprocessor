@@ -17,6 +17,7 @@ public class TestMain {
 		school.setId(1);
 		Student student = new Student();
 		student.setName("Test A");
+		student.setSection("10C");
 		List<Student> students = new ArrayList<>();
 		students.add(student);
 		school.setStudents(students);
