@@ -24,7 +24,7 @@ public class CustomMethodValidator extends BaseJsonRequestValidator implements J
 	}
 	
 	@Override
-	public List<ValidationMessage> validate(Object currentInstance, Object parentInstance, String path,
+	public List<ValidationMessage> validate(Object currentInstance, String path,
 			JsonValidatorContext jsonValidatorContext) {
 		List<ValidationMessage> errors = new ArrayList<ValidationMessage>();
 		if(currentInstance.getClass().isAnnotationPresent(JsonKeyValidator.class)) {

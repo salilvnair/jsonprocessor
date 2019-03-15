@@ -22,7 +22,7 @@ public class MinItemsValidator extends BaseJsonRequestValidator implements JsonR
 	}
 
 	@Override
-	public List<ValidationMessage> validate(Object currentInstance, Object parentInstance, String path,
+	public List<ValidationMessage> validate(Object currentInstance, String path,
 			JsonValidatorContext jsonValidatorContext) {
 		List<ValidationMessage> errors = new ArrayList<ValidationMessage>();
 		Object listObject = ReflectionUtil.getFieldValue(currentInstance, field);

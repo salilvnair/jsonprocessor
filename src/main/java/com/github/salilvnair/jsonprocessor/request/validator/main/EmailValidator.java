@@ -23,7 +23,7 @@ public class EmailValidator extends BaseJsonRequestValidator implements JsonRequ
 	}
 
 	@Override
-	public List<ValidationMessage> validate(Object currentInstance, Object parentInstance, String path,
+	public List<ValidationMessage> validate(Object currentInstance, String path,
 			JsonValidatorContext jsonValidatorContext) {
 		List<ValidationMessage> errors = new ArrayList<ValidationMessage>();
 		Object fieldValue = ReflectionUtil.getFieldValue(currentInstance, field.getName());

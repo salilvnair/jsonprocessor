@@ -11,5 +11,5 @@ public interface JsonRequestValidator {
 	
 	public static final String ROOT_PATH = "$";
 	
-	List<ValidationMessage> validate(Object currentInstance, Object parentInstance, String path,JsonValidatorContext jsonValidatorContext);
+	List<ValidationMessage> validate(Object currentInstance, String path,JsonValidatorContext jsonValidatorContext);
 }

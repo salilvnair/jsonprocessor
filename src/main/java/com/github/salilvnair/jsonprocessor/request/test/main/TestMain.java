@@ -19,14 +19,14 @@ public class TestMain {
 		student.setName("Test A");
 		List<Student> students = new ArrayList<>();
 		students.add(student);
-		//school.setStudents(students);
+		school.setStudents(students);
 		Map<String,Object> validatorMap  = new HashMap<>();
 		validatorMap.put("test", "Mad");
 		List<School> listRequest = new ArrayList<>();
 		listRequest.add(school);
 		JsonProcessorBuilder jsonProcessorBuilder = new JsonProcessorBuilder();
 		List<ValidationMessage>  validationMsgList  = jsonProcessorBuilder
-														.request(listRequest)
+														.request(school)
 														.setUserValidatorMap(validatorMap)
 														.validate();
 		System.out.println(validationMsgList);

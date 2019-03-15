@@ -26,7 +26,7 @@ public class ListValidator extends BaseJsonRequestValidator implements JsonReque
 	}
 
 	@Override
-	public List<ValidationMessage> validate(Object currentInstance, Object parentInstance, String path,
+	public List<ValidationMessage> validate(Object currentInstance, String path,
 			JsonValidatorContext jsonValidatorContext) {
 		List<ValidationMessage> errors = new ArrayList<ValidationMessage>();
 		List<?> nodeList = null;
@@ -37,7 +37,7 @@ public class ListValidator extends BaseJsonRequestValidator implements JsonReque
 			Object fieldValue = ReflectionUtil.getFieldValue(currentInstance, field);
 			this.jsonProcessorUtil = new JsonProcessorUtil(field,JsonElementType.LIST_FIELD);
 			if (jsonProcessorUtil != null) {
-				errors.addAll(jsonProcessorUtil.validate(currentInstance, parentInstance, path, jsonValidatorContext));
+				errors.addAll(jsonProcessorUtil.validate(currentInstance, path, jsonValidatorContext));
 			}
 			nodeList = (List<?>) fieldValue;
 		}
@@ -46,7 +46,7 @@ public class ListValidator extends BaseJsonRequestValidator implements JsonReque
 			for (Object n : nodeList) {//for each in list
 				this.jsonProcessorUtil = new JsonProcessorUtil(n,JsonElementType.OBJECT);
 				if (jsonProcessorUtil != null) {
-					errors.addAll(jsonProcessorUtil.validate(n, parentInstance, path + "[" + i + "]",jsonValidatorContext));
+					errors.addAll(jsonProcessorUtil.validate(n, path + "[" + i + "]",jsonValidatorContext));
 				}
 				i++;
 			}	

@@ -21,7 +21,7 @@ public class LengthValidator extends BaseJsonRequestValidator implements JsonReq
 	}
 
 	@Override
-	public List<ValidationMessage> validate(Object currentInstance, Object parentInstance, String path,
+	public List<ValidationMessage> validate(Object currentInstance, String path,
 			JsonValidatorContext jsonValidatorContext) {
 		List<ValidationMessage> errors = new ArrayList<ValidationMessage>();
 		JsonKeyValidator jsonFieldKeyValidator = field.getAnnotation(JsonKeyValidator.class);

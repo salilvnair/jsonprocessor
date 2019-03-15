@@ -26,13 +26,13 @@ public class ObjectValidator extends BaseJsonRequestValidator implements JsonReq
 	}
 
 	@Override
-	public List<ValidationMessage> validate(Object currentInstance, Object parentInstance, String path,
+	public List<ValidationMessage> validate(Object currentInstance, String path,
 			JsonValidatorContext jsonValidatorContext) {
 		List<ValidationMessage> errors = new ArrayList<ValidationMessage>();
 		for (Field property : properties) {
 			this.jsonProcessorUtil = new JsonProcessorUtil(property,JsonElementType.FIELD);
 			this.jsonProcessorUtil.setJsonValidatorContext(jsonValidatorContext);
-			errors.addAll(jsonProcessorUtil.validate(currentInstance, parentInstance,  path + "." + property.getName(),jsonValidatorContext));
+			errors.addAll(jsonProcessorUtil.validate(currentInstance,  path + "." + property.getName(),jsonValidatorContext));
 		}
 		return Collections.unmodifiableList(errors);
 	}

@@ -22,10 +22,10 @@ public class ConditionalValidator  extends BaseJsonRequestValidator  implements 
 	}
 
 	@Override
-	public List<ValidationMessage> validate(Object object, Object parentObject, String path,JsonValidatorContext jsonValidatorContext) {
+	public List<ValidationMessage> validate(Object currentInstance, String path,JsonValidatorContext jsonValidatorContext) {
 		List<ValidationMessage> errors = new ArrayList<ValidationMessage>();
-		if(object.getClass().isAnnotationPresent(JsonKeyValidator.class)) {
-			JsonKeyValidator jsonObjectKeyValidator = object.getClass().getAnnotation(JsonKeyValidator.class);
+		if(currentInstance.getClass().isAnnotationPresent(JsonKeyValidator.class)) {
+			JsonKeyValidator jsonObjectKeyValidator = currentInstance.getClass().getAnnotation(JsonKeyValidator.class);
 			JsonKeyValidator jsonFieldKeyValidator = field.getAnnotation(JsonKeyValidator.class);
 			AbstractCustomJsonValidatorTask validatorTask;
 			try {
@@ -33,7 +33,7 @@ public class ConditionalValidator  extends BaseJsonRequestValidator  implements 
 				if(validatorTask!=null) {
 					if(!EMPTY_STRING.equals(jsonFieldKeyValidator.condition())) {
 						jsonValidatorContext.setPath(path);
-						jsonValidatorContext.setJsonRequest((JsonRequest) object);
+						jsonValidatorContext.setJsonRequest((JsonRequest) currentInstance);
 						String errorMessage = CustomMethodValidator.invokeCustomTask(jsonValidatorContext,jsonFieldKeyValidator.condition(),jsonFieldKeyValidator,validatorTask);
 						if(errorMessage!=null) {
 							ValidationMessage validationMessage = new ValidationMessage();

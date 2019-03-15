@@ -29,18 +29,18 @@ public class JsonProcessorUtil {
 	
 	public List<ValidationMessage> validate(JsonRequest request) {
 		this.init(request,JsonElementType.OBJECT);
-		return this.validate(request, request, ROOT_PATH,jsonValidatorContext);
+		return this.validate(request, ROOT_PATH,jsonValidatorContext);
 	}
 	
 	public List<ValidationMessage> validate(List<?> request) {
 		this.init(request,JsonElementType.LIST);
-		return this.validate(request, request, ROOT_PATH,jsonValidatorContext);
+		return this.validate(request, ROOT_PATH,jsonValidatorContext);
 	}
 	
-	public List<ValidationMessage> validate(Object object, Object rootObject, String path,JsonValidatorContext jsonValidatorContext) {
+	public List<ValidationMessage> validate(Object requestInstance, String path,JsonValidatorContext jsonValidatorContext) {
 		List<ValidationMessage> errors = new ArrayList<ValidationMessage>();
         for (JsonRequestValidator v : getJsonRequestValidators()) {
-            errors.addAll(v.validate(object, rootObject, path,jsonValidatorContext));
+            errors.addAll(v.validate(requestInstance, path,jsonValidatorContext));
         }
         return errors;
 	}
