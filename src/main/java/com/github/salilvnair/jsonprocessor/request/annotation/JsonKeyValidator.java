@@ -38,7 +38,7 @@ public @interface JsonKeyValidator {
 	String userDefinedMessage() default "";
 	/***
 	 * Use the <b>UserDefinedMessage</b> annotation to show multiple user defined messages
-	 * </br>when the JsonKeyValidator has more than one validation type
+	 * when the JsonKeyValidator has more than one validation type
 	 * */
 	UserDefinedMessage[] userDefinedMessages() default {};
 	Class<? extends AbstractCustomJsonValidatorTask> customTaskValidator() default AbstractCustomJsonValidatorTask.class;
