@@ -28,14 +28,14 @@ public abstract class BaseJsonRequestValidator {
 		JsonKeyValidator jsonFieldKeyValidator = field.getAnnotation(JsonKeyValidator.class);
 		ValidationMessage validationMessage = new ValidationMessage();
 		validationMessage.setMessage(systemMsg);
+		validationMessage.setType(jsonFieldKeyValidator.messageType());
 		String errorMessage = null;
 		if(!EMPTY_STRING.equals(jsonFieldKeyValidator.userDefinedMessage())) {
 			errorMessage = jsonFieldKeyValidator.userDefinedMessage();
 			if(path!=null) {
 				errorMessage = errorMessage.replace(JsonKeyValidatorConstant.PATH_PLACEHOLDER, path);
 			}
-			validationMessage.setMessage(errorMessage);
-			validationMessage.setType(jsonFieldKeyValidator.messageType());
+			validationMessage.setMessage(errorMessage);			
 		}
 		else if(jsonFieldKeyValidator.userDefinedMessages().length>0) {
 			for(UserDefinedMessage userDefinedMessageItr : jsonFieldKeyValidator.userDefinedMessages()) {

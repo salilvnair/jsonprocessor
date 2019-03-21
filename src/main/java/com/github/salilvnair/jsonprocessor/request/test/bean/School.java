@@ -10,11 +10,13 @@ import com.github.salilvnair.jsonprocessor.request.test.task.SchoolCustomTask;
 import com.github.salilvnair.jsonprocessor.request.type.MessageType;
 import com.github.salilvnair.jsonprocessor.request.type.ValidatorType;
 @JsonKeyValidator(customTaskValidator=SchoolCustomTask.class)
-public class School extends JsonRequest{
+public class School implements JsonRequest{
 	@JsonKeyValidator(required=true)
 	private long id;
 	@JsonKeyValidator(conditional=true,condition="someRandomCondition")
 	private String name;
+	@JsonKeyValidator(required=true)
+	private HeadMaster headMaster;
 	@JsonKeyValidator(
 		required=true,
 		minItems=4,		
@@ -50,5 +52,11 @@ public class School extends JsonRequest{
 	}
 	public void setStudents(List<Student> students) {
 		this.students = students;
+	}
+	public HeadMaster getHeadMaster() {
+		return headMaster;
+	}
+	public void setHeadMaster(HeadMaster headMaster) {
+		this.headMaster = headMaster;
 	}
 }

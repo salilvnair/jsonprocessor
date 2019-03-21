@@ -6,7 +6,7 @@ import com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidator;
 import com.github.salilvnair.jsonprocessor.request.core.JsonRequest;
 
 
-public class Student extends JsonRequest{
+public class Student implements JsonRequest{
 	@JsonKeyValidator(required=true)
 	private String name;
 	@JsonKeyValidator(alphaNumeric=true,allowNull=true)

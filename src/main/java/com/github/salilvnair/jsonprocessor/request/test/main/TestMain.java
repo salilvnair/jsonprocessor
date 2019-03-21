@@ -7,6 +7,7 @@ import java.util.Map;
 
 import com.github.salilvnair.jsonprocessor.request.context.ValidationMessage;
 import com.github.salilvnair.jsonprocessor.request.helper.JsonProcessorBuilder;
+import com.github.salilvnair.jsonprocessor.request.test.bean.HeadMaster;
 import com.github.salilvnair.jsonprocessor.request.test.bean.School;
 import com.github.salilvnair.jsonprocessor.request.test.bean.Student;
 
@@ -20,7 +21,10 @@ public class TestMain {
 		student.setSection("10C");
 		List<Student> students = new ArrayList<>();
 		students.add(student);
+		HeadMaster headMaster = new HeadMaster();
+		headMaster.setName("John");
 		school.setStudents(students);
+		school.setHeadMaster(headMaster);school.setStudents(students);
 		Map<String,Object> validatorMap  = new HashMap<>();
 		validatorMap.put("test", "Mad");
 		List<School> listRequest = new ArrayList<>();

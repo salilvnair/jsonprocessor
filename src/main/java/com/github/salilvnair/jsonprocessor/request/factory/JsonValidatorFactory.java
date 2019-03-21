@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidator;
+import com.github.salilvnair.jsonprocessor.request.core.JsonRequest;
 import com.github.salilvnair.jsonprocessor.request.type.JsonElementType;
 import com.github.salilvnair.jsonprocessor.request.validator.core.JsonRequestValidator;
 import com.github.salilvnair.jsonprocessor.request.validator.main.AlphaNumericValidator;
@@ -17,6 +18,7 @@ import com.github.salilvnair.jsonprocessor.request.validator.main.ListValidator;
 import com.github.salilvnair.jsonprocessor.request.validator.main.MaxItemsValidator;
 import com.github.salilvnair.jsonprocessor.request.validator.main.MinItemsValidator;
 import com.github.salilvnair.jsonprocessor.request.validator.main.NumericValidator;
+import com.github.salilvnair.jsonprocessor.request.validator.main.ObjectFieldValidator;
 import com.github.salilvnair.jsonprocessor.request.validator.main.ObjectValidator;
 import com.github.salilvnair.jsonprocessor.request.validator.main.PatternValidator;
 import com.github.salilvnair.jsonprocessor.request.validator.main.RequiredValidator;
@@ -69,8 +71,11 @@ public class JsonValidatorFactory {
 		if(!EMPTY_STRING.equals(jsonKeyValidator.condition()) && jsonKeyValidator.conditional()) {
 			validators.add(new ConditionalValidator(property));
 		}
-		if (property.getType().equals(List.class)){
+		if(List.class.isAssignableFrom(property.getType())) {
 			validators.add(new ListValidator(property));
+		}
+		if(JsonRequest.class.isAssignableFrom(property.getType())) {
+			validators.add(new ObjectFieldValidator(property));
 		}
 		if(jsonKeyValidator.numeric()) {
 			validators.add(new NumericValidator(property));
