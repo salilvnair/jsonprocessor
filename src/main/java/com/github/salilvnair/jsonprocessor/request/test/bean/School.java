@@ -1,5 +1,6 @@
 package com.github.salilvnair.jsonprocessor.request.test.bean;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidator;
@@ -33,7 +34,7 @@ public class School implements JsonRequest{
 				)
 		}
 	)
-	private List<Student> students;
+	private ArrayList<Student> students;
 	public long getId() {
 		return id;
 	}
@@ -50,7 +51,7 @@ public class School implements JsonRequest{
 	public List<Student> getStudents() {
 		return students;
 	}
-	public void setStudents(List<Student> students) {
+	public void setStudents(ArrayList<Student> students) {
 		this.students = students;
 	}
 	public HeadMaster getHeadMaster() {

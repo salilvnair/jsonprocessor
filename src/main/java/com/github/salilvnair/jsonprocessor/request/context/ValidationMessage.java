@@ -33,7 +33,4 @@ public class ValidationMessage {
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 		return gson.toJson(this);
 	}
-	
-	
-    
 }

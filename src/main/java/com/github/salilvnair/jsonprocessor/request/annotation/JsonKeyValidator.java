@@ -6,12 +6,14 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
+import com.github.salilvnair.jsonprocessor.request.helper.DateParsingUtil.DateFormat;
+import com.github.salilvnair.jsonprocessor.request.helper.DateParsingUtil.DateTimeFormat;
 import com.github.salilvnair.jsonprocessor.request.task.AbstractCustomJsonValidatorTask;
 import com.github.salilvnair.jsonprocessor.request.type.MessageType;
 import com.github.salilvnair.jsonprocessor.request.type.Numeric;
 
 @Retention(RUNTIME)
-@Target({ElementType.METHOD, ElementType.FIELD, ElementType.TYPE})
+@Target({ElementType.FIELD, ElementType.TYPE})
 public @interface JsonKeyValidator {
 	boolean required() default false; 
     int minItems() default 0;
@@ -21,7 +23,12 @@ public @interface JsonKeyValidator {
 	int minLength() default -1;
 	int maxLength() default -1;
 	int length() default -1;
-	String date() default "";
+	boolean date() default false;
+	boolean dateString() default false;
+	boolean dateTimeString() default false;
+	DateFormat dateFormat() default DateFormat.DASH_MM_DD_YYYY;
+	DateTimeFormat dateTimeFormat() default DateTimeFormat.SLASH_MM_DD_YYYY_HH_MM;
+	String dateEquals() default "";
 	String minDate() default "";
 	String maxDate() default "";
 	boolean email() default false;
@@ -35,7 +42,8 @@ public @interface JsonKeyValidator {
 	String[] customTasks() default {};
 	String[] dependentHeaders() default {};
 	String dependentHeaderKey() default "";	
-	String userDefinedMessage() default "";
+	String message() default "";
+	String messageId() default "";
 	/***
 	 * Use the <b>UserDefinedMessage</b> annotation to show multiple user defined messages
 	 * when the JsonKeyValidator has more than one validation type

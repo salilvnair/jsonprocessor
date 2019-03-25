@@ -15,7 +15,6 @@ public enum ValidatorType {
 	LENGTH,
 	NUMERIC,
 	ALPHANUMERIC,
+	VALIDVALUES,
 	NA
-	
-	
 }

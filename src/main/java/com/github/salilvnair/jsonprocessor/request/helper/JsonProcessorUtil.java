@@ -29,11 +29,13 @@ public class JsonProcessorUtil {
 	
 	public List<ValidationMessage> validate(JsonRequest request) {
 		this.init(request,JsonElementType.OBJECT);
+		jsonValidatorContext.setRootRequest(request);
 		return this.validate(request, ROOT_PATH,jsonValidatorContext);
 	}
 	
 	public List<ValidationMessage> validate(List<?> request) {
 		this.init(request,JsonElementType.LIST);
+		jsonValidatorContext.setRootList(request);
 		return this.validate(request, ROOT_PATH,jsonValidatorContext);
 	}
 	
@@ -53,13 +55,8 @@ public class JsonProcessorUtil {
 		this.jsonRequestValidators = jsonRequestValidators;
 	}	
 	
-	private void init(Object object,JsonElementType jsonElementType) {
-		if (object instanceof List<?>){
-			this.setJsonRequestValidators(JsonValidatorFactory.generate(object,jsonElementType));
-		}
-		else {
-			this.setJsonRequestValidators(JsonValidatorFactory.generate(object,jsonElementType));
-		}
+	private void init(Object object,JsonElementType jsonElementType) {		
+		this.setJsonRequestValidators(JsonValidatorFactory.generate(object,jsonElementType));
 	}
 
 	public JsonValidatorContext getJsonValidatorContext() {

@@ -1,7 +1,6 @@
 package com.github.salilvnair.jsonprocessor.request.helper;
 
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -9,7 +8,7 @@ import java.util.Locale;
 
 
 public class DateParsingUtil {
-	 public enum DateFormats {
+	 public enum DateFormat {
 	        DASH_YY_M_D("yy-M-d"),
 	        DASH_D_M_YY("d-M-yy"),
 	        DASH_YY_MM_DD("yy-MM-dd"),
@@ -70,63 +69,82 @@ public class DateParsingUtil {
 	        SLASH_YY_DD_MMM("yy/dd/MM"), 
 	        SLASH_MMM_DD_YY("MMM/dd/yy"),
 	        SLASH_YYYY_DD_MM("yyyy/dd/MM"), 
-	        SLASH_SLASH_MM_DD_YYYY("MM/dd/yyyy"),
+	        SLASH_MM_DD_YYYY("MM/dd/yyyy"),
 	        SLASH_YYYY_DD_MMM("yyyy/dd/MMM"), 
 	        SLASH_MMM_DD_YYYY("MMM/dd/yyyy");
 	        
 	        private String dateFormat;
 
-	        DateFormats(String dateFormat) {this.dateFormat = dateFormat;}
+	        DateFormat(String dateFormat) {this.dateFormat = dateFormat;}
 
 	        public String value() {
 	            return dateFormat;
 	        }
 	        
-	        public static String[] names() {
-	            return Arrays.toString(DateFormats.values()).replaceAll("^.|.$", "").split(", ");
+	        public static String[] getAllDateFormats() {
+	        	DateFormat[] dateFormat = values();
+	            String[] formats = new String[dateFormat.length];
+
+	            for (int i = 0; i < dateFormat.length; i++) {
+	            	formats[i] = dateFormat[i].value();
+	            }
+
+	            return formats;
 	        }
 	       
 	    }
 	 
-	 	public enum DateTimeFormats {   
-	 		
-	        DASH_YY_MM_DD_HH_MMA("yy-MMM-dd, hh:mma"), 
-	        DASH_DD_MMM_YY_HH_MMA("dd-MMM-yy, hh:mma"),	   
-	        DASH_YY_MMM_DD_HH_MMA("yy-MMM-dd, hh:mma"), 
-	        DASH_YYYY_MM_DD_HH_MMA("yyyy-MM-dd, hh:mma"), 
-	        DASH_DD_MM_YYYY_HH_MMA("dd-MM-yyyy, hh:mma"),
-	        DASH_YYYY_MMM_DD_HH_MMA("yyyy-MMM-dd, hh:mma"), 
-	        DASH_DD_MMM_YYYY_HH_MMA("dd-MMM-yyyy, hh:mma"),
-	        DASH_YY_MMM_DD_HH_MM_SSA("yy-MMM-dd, hh:mm:ssa"), 
-	        DASH_DD_MMM_YY_HH_MM_SSA("dd-MMM-yy, hh:mm:ssa"),
-	        DASH_YYYY_MM_DD_HH_MM_SSA("yyyy-MM-dd, hh:mm:ssa"), 
-	        DASH_DD_MM_YYYY_HHMM_SSA("dd-MM-yyyy, hh:mm:ssa"),
-	        DASH_YYYY_MMM_DD_HH_MM_SSA("yyyy-MMM-dd, hh:mm:ssa"), 
-	        DASH_DD_MMM_YYYY_HH_MM_SSA("dd-MMM-yyyy, hh:mm:ssa"),
+	 	public enum DateTimeFormat {   
+	 		DASH_MM_DD_YYYY_HH_MM("MM-dd-yyyy HH:mm"),
+	        DASH_YY_MM_DD_C_HH_MMA("yy-MMM-dd, hh:mma"), 
+	        DASH_DD_MMM_YY_C_HH_MMA("dd-MMM-yy, hh:mma"),	   
+	        DASH_YY_MMM_DD_C_HH_MMA("yy-MMM-dd, hh:mma"), 
+	        DASH_YYYY_MM_DD_C_HH_MMA("yyyy-MM-dd, hh:mma"), 
+	        DASH_DD_MM_YYYY_C_HH_MMA("dd-MM-yyyy, hh:mma"),
+	        DASH_YYYY_MMM_DD_C_HH_MMA("yyyy-MMM-dd, hh:mma"), 
+	        DASH_DD_MMM_YYYY_C_HH_MMA("dd-MMM-yyyy, hh:mma"),
+	        DASH_YY_MMM_DD_C_HH_MM_SSA("yy-MMM-dd, hh:mm:ssa"), 
+	        DASH_DD_MMM_YY_C_HH_MM_SSA("dd-MMM-yy, hh:mm:ssa"),
+	        DASH_YYYY_MM_DD_C_HH_MM_SSA("yyyy-MM-dd, hh:mm:ssa"), 
+	        DASH_DD_MM_YYYY_C_HHMM_SSA("dd-MM-yyyy, hh:mm:ssa"),
+	        DASH_YYYY_MMM_DD_C_HH_MM_SSA("yyyy-MMM-dd, hh:mm:ssa"), 
+	        DASH_DD_MMM_YYYY_C_HH_MM_SSA("dd-MMM-yyyy, hh:mm:ssa"),
 	        
-	        SLASH_YY_MM_DD_HH_MMA("yy/MM/dd, hh:mma"), 
-	        SLASH_DD_MM_YY_HH_MMA("dd/MM/yy, hh:mma"),
-	        SLASH_YY_MMM_DD_HH_MMA("yy/MMM/dd, hh:mma"), 
-	        SLASH_DD_MMM_YY_HH_MMA("dd/MMM/yy, hh:mma"),
-	        SLASH_YYYY_MM_DD_HH_MMA("yyyy/MM/dd, hh:mma"), 
-	        SLASH_DD_MM_YYYY_HH_MMA("dd/MM/yyyy, hh:mma"),
-	        SLASH_YYYY_MMM_DD_HH_MMA("yyyy/MMM/dd, hh:mma"), 
-	        SLASH_DD_MMM_YYYY_HH_MMA("dd/MMM/yyyy, hh:mma"),
-	        SLASH_YY_MM_DD_HH_MM_SSA("yy/MM/dd, hh:mm:ssa"), 
-	        SLASH_DD_MM_YY_HH_MM_SSA("dd/MM/yy, hh:mm:ssa"),
-	        SLASH_YY_MMM_DD_HH_MM_SSA("yy/MMM/dd, hh:mm:ssa"), 
-	        SLASH_DD_MMM_YY_HH_MM_SSA("dd/MMM/yy, hh:mm:ssa"),
-	        SLASH_YYYY_MM_DD_HH_MM_SSA("yyyy/MM/dd, hh:mm:ssa"), 
-	        SLASH_DD_MM_YYYY_HH_MM_SSA("dd/MM/yyyy, hh:mm:ssa"),
-	        SLASH_YYYY_MMM_DD_HH_MM_SSA("yyyy/MMM/dd, hh:mm:ssa"), 
-	        SLASH_DD_MMM_YYYY_HH_MM_SSA("dd/MMM/yyyy, hh:mm:ssa");
+	        SLASH_MM_DD_YYYY_HH_MM("MM/dd/yyyy HH:mm"),
+	        SLASH_YY_MM_DD_C_HH_MMA("yy/MM/dd, hh:mma"), 
+	        SLASH_DD_MM_YY_C_HH_MMA("dd/MM/yy, hh:mma"),
+	        SLASH_YY_MMM_DD_C_HH_MMA("yy/MMM/dd, hh:mma"), 
+	        SLASH_DD_MMM_YY_C_HH_MMA("dd/MMM/yy, hh:mma"),
+	        SLASH_YYYY_MM_DD_C_HH_MMA("yyyy/MM/dd, hh:mma"), 
+	        SLASH_DD_MM_YYYY_C_HH_MMA("dd/MM/yyyy, hh:mma"),
+	        SLASH_YYYY_MMM_DD_C_HH_MMA("yyyy/MMM/dd, hh:mma"), 
+	        SLASH_DD_MMM_YYYY_C_HH_MMA("dd/MMM/yyyy, hh:mma"),
+	        SLASH_YY_MM_DD_HH_C_MM_SSA("yy/MM/dd, hh:mm:ssa"), 
+	        SLASH_DD_MM_YY_HH_C_MM_SSA("dd/MM/yy, hh:mm:ssa"),
+	        SLASH_YY_MMM_DD_HH_C_MM_SSA("yy/MMM/dd, hh:mm:ssa"), 
+	        SLASH_DD_MMM_YY_C_HH_MM_SSA("dd/MMM/yy, hh:mm:ssa"),
+	        SLASH_YYYY_MM_DD_C_HH_MM_SSA("yyyy/MM/dd, hh:mm:ssa"), 
+	        SLASH_DD_MM_YYYY_C_HH_MM_SSA("dd/MM/yyyy, hh:mm:ssa"),
+	        SLASH_YYYY_MMM_DD_C_HH_MM_SSA("yyyy/MMM/dd, hh:mm:ssa"), 
+	        SLASH_DD_MMM_YYYY_C_HH_MM_SSA("dd/MMM/yyyy, hh:mm:ssa");
 	        
 	        private String dateTimeFormat;
 
-	        DateTimeFormats(String dateTimeFormat) {this.dateTimeFormat = dateTimeFormat;}
+	        DateTimeFormat(String dateTimeFormat) {this.dateTimeFormat = dateTimeFormat;}
 
-	        public String getDateTimeFormat() {
+	        public String value() {
 	            return dateTimeFormat;
+	        }
+	        
+	        public static String[] getAllDateTimeFormats() {
+	        	DateTimeFormat[] dateTimeFormats = values();
+	            String[] formats = new String[dateTimeFormats.length];
+
+	            for (int i = 0; i < dateTimeFormats.length; i++) {
+	            	formats[i] = dateTimeFormats[i].value();
+	            }
+
+	            return formats;
 	        }
 	    
 	 	}
@@ -201,8 +219,8 @@ public class DateParsingUtil {
 	    }
 
 	    
-	    public static long getDaysBetweenTwoDate(String old, String newDate, DateFormats dateFormats) {
-	        SimpleDateFormat myFormat = new SimpleDateFormat(dateFormats.value(), Locale.getDefault());
+	    public static long getDaysBetweenTwoDate(String old, String newDate, DateFormat dateFormat) {
+	        SimpleDateFormat myFormat = new SimpleDateFormat(dateFormat.value(), Locale.getDefault());
 	        try {
 	            Date date1 = myFormat.parse(old);
 	            Date date2 = myFormat.parse(newDate);
@@ -219,8 +237,8 @@ public class DateParsingUtil {
 	        return 0;
 	    }
 
-	    public static long getHoursBetweenTwoDate(String old, String newDate, DateFormats dateFormats) {
-	        SimpleDateFormat myFormat = new SimpleDateFormat(dateFormats.value(), Locale.getDefault());
+	    public static long getHoursBetweenTwoDate(String old, String newDate, DateFormat dateFormat) {
+	        SimpleDateFormat myFormat = new SimpleDateFormat(dateFormat.value(), Locale.getDefault());
 	        try {
 	            Date date1 = myFormat.parse(old);
 	            Date date2 = myFormat.parse(newDate);
@@ -236,8 +254,8 @@ public class DateParsingUtil {
 	        return 0;
 	    }
 
-	    public static long getMinutesBetweenTwoDates(String old, String newDate, DateFormats dateFormats) {
-	        SimpleDateFormat myFormat = new SimpleDateFormat(dateFormats.value(), Locale.getDefault());
+	    public static long getMinutesBetweenTwoDates(String old, String newDate, DateFormat dateFormat) {
+	        SimpleDateFormat myFormat = new SimpleDateFormat(dateFormat.value(), Locale.getDefault());
 	        try {
 	            Date date1 = myFormat.parse(old);
 	            Date date2 = myFormat.parse(newDate);
@@ -279,7 +297,7 @@ public class DateParsingUtil {
 
 	    public static Date parseAnyDate(String dateString) {
 	    	Date date = null;
-	        for (DateFormats formats : DateFormats.values()) {
+	        for (DateFormat formats : DateFormat.values()) {
 	            try {
 	                SimpleDateFormat format = new SimpleDateFormat(formats.value(), Locale.getDefault());
 	                date = format.parse(dateString);
@@ -292,16 +310,35 @@ public class DateParsingUtil {
 	    }
 	    
 	    public static boolean isDate(String date) {
-	        for (DateFormats formats : DateFormats.values()) {
+	        for (DateFormat formats : DateFormat.values()) {
 	            try {
 	                SimpleDateFormat format = new SimpleDateFormat(formats.value(), Locale.getDefault());
-	                format.parse(date).getTime();
+	                Long time = format.parse(date).getTime();
+	                if(time!=null) {
+	                	return true;
+	                }
 	            } 
 	            catch (Exception ex) {
-	            	return false;
+	            	
 	            }
 	        }
-	        return true;
+	        return false;
+	    }
+	    
+	    public static boolean isDateTime(String date) {
+	        for (DateTimeFormat formats : DateTimeFormat.values()) {
+	            try {
+	                SimpleDateFormat format = new SimpleDateFormat(formats.value(), Locale.getDefault());
+	                Long time = format.parse(date).getTime();
+	                if(time!=null) {
+	                	return true;
+	                }
+	            } 
+	            catch (Exception ex) {
+	            	
+	            }
+	        }
+	        return false;
 	    }
 	    
 	    public static boolean isDate(String dateString, String dateFormat) {
@@ -309,45 +346,45 @@ public class DateParsingUtil {
                 SimpleDateFormat format = new SimpleDateFormat(dateFormat,Locale.getDefault());
                 Date formattedDate = format.parse(dateString);
                 String parsedDate = format.format(formattedDate);
-                if(!dateString.equals(parsedDate)) {
-                	return false;
+                if(dateString.equals(parsedDate)) {
+                	return true;
                 }
             } 
             catch (Exception ex) {
-            	return false;
+            	
             }
-	        return true;
+	        return false;
 	    }
 	    
-	    public static String getDateFormat(String dateString, String[] dateFormats) {
-	    	for(String dateFormat:dateFormats) {
+	    public static String getDateFormat(String dateString, String[] dateFormat) {
+	    	for(String format:dateFormat) {
 		    	try {
-	                SimpleDateFormat format = new SimpleDateFormat(dateFormat,Locale.getDefault());
-	                Date formattedDate = format.parse(dateString);
-	                String parsedDate = format.format(formattedDate);
+	                SimpleDateFormat sdFormat = new SimpleDateFormat(format,Locale.getDefault());
+	                Date formattedDate = sdFormat.parse(dateString);
+	                String parsedDate = sdFormat.format(formattedDate);
 	                if(dateString.equals(parsedDate)) {
-	                	return dateFormat;
+	                	return format;
 	                }
 	            } 
 	            catch (Exception ex) {
-	            	return null;
+
 	            }
 	    	}
 	        return null;
 	    }
 	    
-	    public static boolean isDate(String date, List<String> dateFormats) {
+	    public static boolean isDate(String date, List<String> dateFormat) {
 	    	boolean isFormattedDate = false;
-           for(String dateFormat:dateFormats) {
-        	   isFormattedDate = isDate(date, dateFormat);
+           for(String format:dateFormat) {
+        	   isFormattedDate = isDate(date, format);
            }
            return isFormattedDate;
 	    }
 	    
-	    public static boolean isDate(String date, String[] dateFormats) {
+	    public static boolean isDate(String date, String[] dateFormat) {
 	    	boolean isFormattedDate = false;
-           for(String dateFormat:dateFormats) {
-        	   isFormattedDate = isDate(date, dateFormat);
+           for(String format:dateFormat) {
+        	   isFormattedDate = isDate(date, format);
         	   if(isFormattedDate) {
         		   return isFormattedDate;
         	   }
@@ -366,13 +403,13 @@ public class DateParsingUtil {
 	        return null;
 	    }
 	    
-	    public static Date parseDate(String dateString, String[] dateFormats) {
-	    	String dateFormat = getDateFormat(dateString, dateFormats);
-	    	return parseDate(dateString, dateFormat);
+	    public static Date parseDate(String dateString, String[] dateFormat) {
+	    	String format = getDateFormat(dateString, dateFormat);
+	    	return parseDate(dateString,  format);
 	    }
 	    
-	    public static Date parseDate(String dateString, DateFormats dateFormats) {
-	        SimpleDateFormat format = new SimpleDateFormat(dateFormats.value(), Locale.getDefault());
+	    public static Date parseDate(String dateString, DateFormat dateFormat) {
+	        SimpleDateFormat format = new SimpleDateFormat(dateFormat.value(), Locale.getDefault());
 	        try {
 	            return format.parse(dateString);
 	        } 
@@ -381,8 +418,19 @@ public class DateParsingUtil {
 	        }
 	        return null;
 	    }
+	    
+	    public static Date parseDate(String dateTimeString, DateTimeFormat dateTimeFormat) {
+	        SimpleDateFormat format = new SimpleDateFormat(dateTimeFormat.value(), Locale.getDefault());
+	        try {
+	            return format.parse(dateTimeString);
+	        } 
+	        catch (Exception e) {
+	        	
+	        }
+	        return null;
+	    }
 
-	    public static String getDate(String date, DateFormats orginalFormat, DateFormats newFormat) {
+	    public static String getDate(String date, DateFormat orginalFormat, DateFormat newFormat) {
 	        SimpleDateFormat sample = new SimpleDateFormat(orginalFormat.value(), Locale.getDefault());
 	        try {
 	            long time = sample.parse(date).getTime();
@@ -395,14 +443,51 @@ public class DateParsingUtil {
 	        return date;
 	    }
 
-	    public static String getDesiredFormat(DateFormats formats) {
+	    public static String getDesiredDateFormat(DateFormat formats) {
 	        SimpleDateFormat format = new SimpleDateFormat(formats.value(), Locale.getDefault());
 	        return format.format(new Date());
 	    }
 
-	    public static String getDesiredFormat(DateFormats formats, long date) {
+	    public static String getDesiredDateFormat(DateFormat formats, long date) {
 	        if (date == 0) return "";
 	        SimpleDateFormat format = new SimpleDateFormat(formats.value(), Locale.getDefault());
 	        return format.format(date);
+	    }
+	    
+
+	    public static String getDesiredDateFormat(DateFormat formats, Date date) {
+	        if (date == null) return "";
+	        SimpleDateFormat format = new SimpleDateFormat(formats.value(), Locale.getDefault());
+	        return format.format(date);
+	    }
+	    
+	    public static String getDesiredDateFormat(String format, Date date) {
+	        if (date == null) return "";
+	        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format, Locale.getDefault());
+	        return simpleDateFormat.format(date);
+	    }
+	    
+	    public static String getDesiredDateTimeFormat(DateTimeFormat formats) {
+	        SimpleDateFormat format = new SimpleDateFormat(formats.value(), Locale.getDefault());
+	        return format.format(new Date());
+	    }
+
+	    public static String getDesiredDateTimeFormat(DateTimeFormat formats, long date) {
+	        if (date == 0) return "";
+	        SimpleDateFormat format = new SimpleDateFormat(formats.value(), Locale.getDefault());
+	        return format.format(date);
+	    }
+	    
+
+	    public static String getDesiredDateTimeFormat(DateTimeFormat formats, Date date) {
+	        if (date == null) return "";
+	        SimpleDateFormat format = new SimpleDateFormat(formats.value(), Locale.getDefault());
+	        return format.format(date);
+	    }
+	    
+	    public static String getDesiredDateTimeFormat(String format, Date date) {
+	        if (date == null) return "";
+	        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format, Locale.getDefault());
+	        return simpleDateFormat.format(date);
 	    }
 }

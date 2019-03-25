@@ -34,16 +34,39 @@ public class CustomMethodValidator extends BaseJsonRequestValidator implements J
 			try {
 				validatorTask = jsonObjectKeyValidator.customTaskValidator().newInstance();
 				if(validatorTask!=null) {
-					if(!EMPTY_STRING.equals(jsonFieldKeyValidator.condition())) {
+					if(!EMPTY_STRING.equals(jsonFieldKeyValidator.customTask())) {
 						jsonValidatorContext.setPath(path);
+						jsonValidatorContext.setField(field);
 						jsonValidatorContext.setJsonRequest((JsonRequest) currentInstance);
-						String errorMessage = CustomMethodValidator.invokeCustomTask(jsonValidatorContext,jsonFieldKeyValidator.condition(),jsonFieldKeyValidator,validatorTask);
+						String errorMessage = CustomMethodValidator.invokeCustomTask(jsonValidatorContext,jsonFieldKeyValidator.customTask(),jsonFieldKeyValidator,validatorTask);
 						if(errorMessage!=null) {
 							ValidationMessage validationMessage = new ValidationMessage();
 							validationMessage.setMessage(errorMessage);
 							validationMessage.setPath(path);
 							validationMessage.setType(jsonFieldKeyValidator.messageType());
 							errors.add(validationMessage);
+						}
+					}
+					else {
+						if(EMPTY_STRING.equals(jsonFieldKeyValidator.customTask()) &&
+								jsonFieldKeyValidator.customTasks().length>0) {
+							String errorMessage = null;
+							StringBuilder errorMessageBuilder = new StringBuilder("");
+							for(String customTask:jsonFieldKeyValidator.customTasks()) {
+								errorMessage =  CustomMethodValidator.invokeCustomTask(jsonValidatorContext,customTask,jsonFieldKeyValidator,validatorTask);
+								if(errorMessage!=null) {
+									errorMessageBuilder.append(errorMessage);
+									errorMessageBuilder.append(",");
+								}
+							}
+							if(!EMPTY_STRING.equals(errorMessageBuilder.toString())) {
+								errorMessage = errorMessageBuilder.toString().replaceAll(",$", "");
+								ValidationMessage validationMessage = new ValidationMessage();
+								validationMessage.setMessage(errorMessage);
+								validationMessage.setPath(path);
+								validationMessage.setType(jsonFieldKeyValidator.messageType());
+								errors.add(validationMessage);
+							}
 						}
 					}
 				}
@@ -67,9 +90,16 @@ public class CustomMethodValidator extends BaseJsonRequestValidator implements J
 			hasInvalidData =  (boolean) validatedTaskResponse;
 		}
 		if(hasInvalidData){
-			if(!EMPTY_STRING.equals(jsonFieldKeyValidator.userDefinedMessage())){					
-				errorMessage = jsonFieldKeyValidator.userDefinedMessage();
-			}		
+			if(!EMPTY_STRING.equals(jsonFieldKeyValidator.message())){					
+				errorMessage = jsonFieldKeyValidator.message();
+			}
+			else if(!EMPTY_STRING.equals(jsonFieldKeyValidator.messageId())) {
+				if(!jsonValidatorContext.getUserDefinedMessageDataSet().isEmpty()) {
+					if(jsonValidatorContext.getUserDefinedMessageDataSet().containsKey(jsonFieldKeyValidator.messageId())) {
+						errorMessage = jsonValidatorContext.getUserDefinedMessageDataSet().get(jsonFieldKeyValidator.messageId());
+					}
+				}
+			}
 		}
 		if(errorMessage!=null){
 			String path = jsonValidatorContext.getPath();

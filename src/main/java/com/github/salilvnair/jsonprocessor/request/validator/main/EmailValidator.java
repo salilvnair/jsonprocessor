@@ -39,7 +39,7 @@ public class EmailValidator extends BaseJsonRequestValidator implements JsonRequ
 				invalidEmail = !EmailValidator.isValid(columnStringValue);
 			}
 			if(invalidEmail) {
-				errors = prepareFieldViolationMessage(ValidatorType.EMAIL,field,errors,path,"invalid email error");
+				errors = prepareFieldViolationMessage(jsonValidatorContext,ValidatorType.EMAIL,field,errors,path,"invalid email error");
 			}
 			
 		}

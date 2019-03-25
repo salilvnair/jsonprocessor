@@ -27,7 +27,7 @@ public class RequiredValidator extends BaseJsonRequestValidator implements JsonR
 		List<ValidationMessage> errors = new ArrayList<ValidationMessage>();
 		Object fieldValue = ReflectionUtil.getFieldValue(currentInstance, field.getName());
 		if (fieldValue == null) {
-			errors = prepareFieldViolationMessage(ValidatorType.REQUIRED,field,errors,path,"required error");
+			errors = prepareFieldViolationMessage(jsonValidatorContext,ValidatorType.REQUIRED,field,errors,path,"required error");
 		}
 		return Collections.unmodifiableList(errors);
 	}

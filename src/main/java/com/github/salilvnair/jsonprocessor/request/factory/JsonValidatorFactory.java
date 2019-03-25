@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidator;
+import com.github.salilvnair.jsonprocessor.request.annotation.ValidValues;
 import com.github.salilvnair.jsonprocessor.request.core.JsonRequest;
 import com.github.salilvnair.jsonprocessor.request.type.JsonElementType;
 import com.github.salilvnair.jsonprocessor.request.validator.core.JsonRequestValidator;
@@ -22,6 +23,7 @@ import com.github.salilvnair.jsonprocessor.request.validator.main.ObjectFieldVal
 import com.github.salilvnair.jsonprocessor.request.validator.main.ObjectValidator;
 import com.github.salilvnair.jsonprocessor.request.validator.main.PatternValidator;
 import com.github.salilvnair.jsonprocessor.request.validator.main.RequiredValidator;
+import com.github.salilvnair.jsonprocessor.request.validator.main.ValidValueValidator;
 
 public class JsonValidatorFactory {
 	public static final String EMPTY_STRING = "";
@@ -65,15 +67,23 @@ public class JsonValidatorFactory {
 	private static List<JsonRequestValidator> generateJsonFieldValidators(Field property) {
 		List<JsonRequestValidator> validators = new ArrayList<>();
 		JsonKeyValidator jsonKeyValidator = property.getAnnotation(JsonKeyValidator.class);
+		if(property.isAnnotationPresent(ValidValues.class)) {
+			ValidValues validValues = property.getAnnotation(ValidValues.class);
+			if(validValues.value().length>0 ||!EMPTY_STRING.equals(validValues.dataSetKey())) {
+				validators.add(new ValidValueValidator(property));
+			}
+		}
 		if(jsonKeyValidator.required()) {
 			validators.add(new RequiredValidator(property));
 		}
 		if(!EMPTY_STRING.equals(jsonKeyValidator.condition()) && jsonKeyValidator.conditional()) {
 			validators.add(new ConditionalValidator(property));
 		}
+		//handle fields of type List,ArrayList...etc
 		if(List.class.isAssignableFrom(property.getType())) {
 			validators.add(new ListValidator(property));
 		}
+		//handle fields of type User defined object i.e which implements JsonRequest
 		if(JsonRequest.class.isAssignableFrom(property.getType())) {
 			validators.add(new ObjectFieldValidator(property));
 		}
@@ -89,10 +99,7 @@ public class JsonValidatorFactory {
 		if(!EMPTY_STRING.equals(jsonKeyValidator.pattern())) {
 			validators.add(new PatternValidator(property));
 		}
-		if(!EMPTY_STRING.equals(jsonKeyValidator.date())||
-				!EMPTY_STRING.equals(jsonKeyValidator.minDate()) ||
-						!EMPTY_STRING.equals(jsonKeyValidator.maxDate())
-		) {
+		if(jsonKeyValidator.date()||jsonKeyValidator.dateString()||jsonKeyValidator.dateTimeString()) {
 			validators.add(new DateValidator(property));
 		}
 		if(!EMPTY_STRING.equals(jsonKeyValidator.customTask())) {

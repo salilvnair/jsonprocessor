@@ -33,6 +33,7 @@ public class ConditionalValidator  extends BaseJsonRequestValidator  implements 
 				if(validatorTask!=null) {
 					if(!EMPTY_STRING.equals(jsonFieldKeyValidator.condition())) {
 						jsonValidatorContext.setPath(path);
+						jsonValidatorContext.setField(field);
 						jsonValidatorContext.setJsonRequest((JsonRequest) currentInstance);
 						String errorMessage = CustomMethodValidator.invokeCustomTask(jsonValidatorContext,jsonFieldKeyValidator.condition(),jsonFieldKeyValidator,validatorTask);
 						if(errorMessage!=null) {

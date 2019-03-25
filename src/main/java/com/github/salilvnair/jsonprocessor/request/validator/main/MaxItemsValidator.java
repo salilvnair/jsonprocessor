@@ -30,7 +30,7 @@ public class MaxItemsValidator extends BaseJsonRequestValidator implements JsonR
 		List<?> objectList = (List<?>) listObject;
 		if(jsonFieldKeyValidator.maxItems()!=-1) {
 			if(objectList!=null && objectList.size()>jsonFieldKeyValidator.maxItems()) {				
-				errors = prepareFieldViolationMessage(ValidatorType.MAXITEMS,field,errors,path,"max items error");
+				errors = prepareFieldViolationMessage(jsonValidatorContext,ValidatorType.MAXITEMS,field,errors,path,"max items error");
 			}
 		}
 		return Collections.unmodifiableList(errors);

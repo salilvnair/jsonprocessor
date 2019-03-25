@@ -10,6 +10,7 @@ import com.github.salilvnair.jsonprocessor.request.helper.JsonProcessorBuilder;
 import com.github.salilvnair.jsonprocessor.request.test.bean.HeadMaster;
 import com.github.salilvnair.jsonprocessor.request.test.bean.School;
 import com.github.salilvnair.jsonprocessor.request.test.bean.Student;
+import com.github.salilvnair.jsonprocessor.request.test.bean.Subject;
 
 public class TestMain {
 
@@ -18,13 +19,19 @@ public class TestMain {
 		school.setId(1);
 		Student student = new Student();
 		student.setName("Test A");
+		student.setDateOfBirth("10/10/1990 12:00");
 		student.setSection("10C");
-		List<Student> students = new ArrayList<>();
+		Subject sub = new Subject();
+		sub.setName("Maths");
+		List<Subject> subs = new ArrayList<>();
+		subs.add(sub);
+		student.setSubjects(subs);
+		ArrayList<Student> students = new ArrayList<>();
 		students.add(student);
 		HeadMaster headMaster = new HeadMaster();
 		headMaster.setName("John");
 		school.setStudents(students);
-		school.setHeadMaster(headMaster);school.setStudents(students);
+		school.setHeadMaster(headMaster);
 		Map<String,Object> validatorMap  = new HashMap<>();
 		validatorMap.put("test", "Mad");
 		List<School> listRequest = new ArrayList<>();
