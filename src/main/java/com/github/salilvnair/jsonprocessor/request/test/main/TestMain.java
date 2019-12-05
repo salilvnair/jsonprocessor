@@ -33,7 +33,9 @@ public class TestMain {
 		school.setStudents(students);
 		school.setHeadMaster(headMaster);
 		Map<String,Object> validatorMap  = new HashMap<>();
-		validatorMap.put("test", "Mad");
+		//validatorMap.put("alumini", "Kendriya Vidhyalaya");
+		validatorMap.put("alumini", "Delhi Public School");
+		school.setName("Kendriya Vidhyalaya 5");
 		List<School> listRequest = new ArrayList<>();
 		listRequest.add(school);
 		JsonProcessorBuilder jsonProcessorBuilder = new JsonProcessorBuilder();
