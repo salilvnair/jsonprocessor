@@ -42,7 +42,7 @@
   
   <properties>
 	<java.version>1.8</java.version>
-	<version.jackson>2.9.8</version.jackson>
+	<version.jackson>2.9.10.1</version.jackson>
 	<version.gson>2.8.5</version.gson>
 	<version.slf4j>1.7.25</version.slf4j>
 	<version.common-log>1.2</version.common-log>
