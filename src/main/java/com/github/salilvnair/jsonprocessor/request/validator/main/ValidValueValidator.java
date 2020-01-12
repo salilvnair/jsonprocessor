@@ -52,7 +52,7 @@ public class ValidValueValidator extends BaseJsonRequestValidator implements Jso
 		}
 		
 		if(validValueViolation) {
-			errors = prepareFieldValidValuesViolationMessage(jsonValidatorContext,ValidatorType.VALIDVALUES,field, errors, path, errorMessage);
+			errors = prepareFieldValidValuesViolationMessage(currentInstance, jsonValidatorContext,ValidatorType.VALIDVALUES,field, errors, path, errorMessage);
 		}
 		return errors;
 	}

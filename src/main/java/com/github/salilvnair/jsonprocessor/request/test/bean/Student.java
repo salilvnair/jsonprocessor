@@ -7,7 +7,7 @@ import com.github.salilvnair.jsonprocessor.request.annotation.ValidValues;
 import com.github.salilvnair.jsonprocessor.request.core.JsonRequest;
 import com.github.salilvnair.jsonprocessor.request.helper.DateParsingUtil.DateFormat;
 
-
+@JsonKeyValidator(id="Student")
 public class Student implements JsonRequest{
 	@JsonKeyValidator(required=true)
 	private String name;

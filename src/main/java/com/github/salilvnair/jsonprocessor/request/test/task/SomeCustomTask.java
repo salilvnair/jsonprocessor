@@ -6,7 +6,6 @@ import com.github.salilvnair.jsonprocessor.request.task.AbstractCustomJsonValida
 public class SomeCustomTask extends AbstractCustomJsonValidatorTask{
 
 	public String someRandomCondition(JsonValidatorContext jsonValidatorContext) {
-		System.out.println(jsonValidatorContext);
 		return null;
 	}
 	

@@ -30,7 +30,7 @@ public class MinItemsValidator extends BaseJsonRequestValidator implements JsonR
 		JsonKeyValidator jsonFieldKeyValidator = field.getAnnotation(JsonKeyValidator.class);
 		if(jsonFieldKeyValidator.minItems()!=0) {
 			if(objectList==null || objectList.size()<jsonFieldKeyValidator.minItems()) {
-				errors = prepareFieldViolationMessage(jsonValidatorContext,ValidatorType.MINITEMS,field,errors,path,"min items error");
+				errors = prepareFieldViolationMessage(currentInstance, jsonValidatorContext,ValidatorType.MINITEMS,field,errors,path,"min items error");
 			}
 		}
 		return Collections.unmodifiableList(errors);

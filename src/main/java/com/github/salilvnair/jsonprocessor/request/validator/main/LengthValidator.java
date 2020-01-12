@@ -100,13 +100,13 @@ public class LengthValidator extends BaseJsonRequestValidator implements JsonReq
 				}
 			}
 			if(minLengthViolated) {
-				errors = prepareFieldViolationMessage(jsonValidatorContext,ValidatorType.MINLENGTH,field,errors,path,"min length error");
+				errors = prepareFieldViolationMessage(currentInstance, jsonValidatorContext,ValidatorType.MINLENGTH,field,errors,path,"min length error");
 			}
 			if(maxLengthViolated) {
-				errors = prepareFieldViolationMessage(jsonValidatorContext,ValidatorType.MAXLENGTH,field,errors,path,"max length error");
+				errors = prepareFieldViolationMessage(currentInstance, jsonValidatorContext,ValidatorType.MAXLENGTH,field,errors,path,"max length error");
 			}
 			if(lengthViolated) {
-				errors = prepareFieldViolationMessage(jsonValidatorContext,ValidatorType.LENGTH,field,errors,path,"length error");
+				errors = prepareFieldViolationMessage(currentInstance, jsonValidatorContext,ValidatorType.LENGTH,field,errors,path,"length error");
 			}
 		}
 		return errors;

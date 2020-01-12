@@ -86,7 +86,7 @@ public class NumericValidator extends BaseJsonRequestValidator implements JsonRe
 				}
 			}
 			if(invalidNumericDetected) {
-				errors = prepareFieldViolationMessage(jsonValidatorContext,ValidatorType.NA,field, errors, path, typeOfNumeric.name()+" error");
+				errors = prepareFieldViolationMessage(currentInstance, jsonValidatorContext,ValidatorType.NA,field, errors, path, typeOfNumeric.name()+" error");
 			}
 		}
 		return errors;

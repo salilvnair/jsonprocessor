@@ -15,6 +15,7 @@ import com.github.salilvnair.jsonprocessor.request.type.Numeric;
 @Retention(RUNTIME)
 @Target({ElementType.FIELD, ElementType.TYPE})
 public @interface JsonKeyValidator {
+	String id() default "";
 	boolean required() default false; 
     int minItems() default 0;
     long maxItems() default -1L;

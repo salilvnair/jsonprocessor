@@ -15,7 +15,7 @@ public abstract class BaseJsonRequestValidator {
 		
 	public static final String EMPTY_STRING = "";
 	
-	public List<ValidationMessage> prepareFieldViolationMessage(JsonValidatorContext jsonValidatorContext,ValidatorType validatorType,Field field,List<ValidationMessage> errors, String path, String systemMsg) {
+	public List<ValidationMessage> prepareFieldViolationMessage(Object currentInstance, JsonValidatorContext jsonValidatorContext,ValidatorType validatorType,Field field,List<ValidationMessage> errors, String path, String systemMsg) {
 		JsonKeyValidator jsonFieldKeyValidator = field.getAnnotation(JsonKeyValidator.class);
 		ValidationMessage validationMessage = new ValidationMessage();
 		validationMessage.setMessage(systemMsg);
@@ -57,12 +57,13 @@ public abstract class BaseJsonRequestValidator {
 				}
 			}
 		}
-		validationMessage.setPath(path);		
+		validationMessage.setPath(path);
+		validationMessage.setId(extractCurrentInstanceId(currentInstance));
 		errors.add(validationMessage);
 		return errors;
 	}
 	
-	public List<ValidationMessage> prepareFieldValidValuesViolationMessage(JsonValidatorContext jsonValidatorContext,ValidatorType validatorType,Field field,List<ValidationMessage> errors, String path, String systemMsg) {
+	public List<ValidationMessage> prepareFieldValidValuesViolationMessage(Object currentInstance, JsonValidatorContext jsonValidatorContext,ValidatorType validatorType,Field field,List<ValidationMessage> errors, String path, String systemMsg) {
 		ValidValues validValues = field.getAnnotation(ValidValues.class);
 		String errorMessage = null;
 		ValidationMessage validationMessage = new ValidationMessage();
@@ -85,9 +86,18 @@ public abstract class BaseJsonRequestValidator {
 			}
 			validationMessage.setMessage(errorMessage);			
 		}
-		validationMessage.setPath(path);		
+		validationMessage.setPath(path);
+		validationMessage.setId(extractCurrentInstanceId(currentInstance));
 		errors.add(validationMessage);
 		return errors;
+	}
+	
+	public String extractCurrentInstanceId(Object currentInstance) {
+		if(currentInstance!=null && currentInstance.getClass().isAnnotationPresent(JsonKeyValidator.class)) {
+			JsonKeyValidator jsonKeyValidator = currentInstance.getClass().getAnnotation(JsonKeyValidator.class);
+			return jsonKeyValidator.id();
+		}
+		return null;
 	}
 
 }

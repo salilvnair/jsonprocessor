@@ -10,7 +10,7 @@ import com.github.salilvnair.jsonprocessor.request.core.JsonRequest;
 import com.github.salilvnair.jsonprocessor.request.test.task.SchoolCustomTask;
 import com.github.salilvnair.jsonprocessor.request.type.MessageType;
 import com.github.salilvnair.jsonprocessor.request.type.ValidatorType;
-@JsonKeyValidator(customTaskValidator=SchoolCustomTask.class)
+@JsonKeyValidator(id="School", customTaskValidator=SchoolCustomTask.class)
 public class School implements JsonRequest{
 	@JsonKeyValidator(required=true)
 	private long id;

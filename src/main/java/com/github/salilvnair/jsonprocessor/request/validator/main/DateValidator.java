@@ -129,7 +129,7 @@ public class DateValidator extends BaseJsonRequestValidator implements JsonReque
 				}				
 			}
 			if(invalidDate && errorMessage!=null) {
-				errors = prepareFieldViolationMessage(jsonValidatorContext,ValidatorType.DATE,field, errors, path, errorMessage);
+				errors = prepareFieldViolationMessage(currentInstance, jsonValidatorContext,ValidatorType.DATE,field, errors, path, errorMessage);
 			}
 		}
 		return errors;

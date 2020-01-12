@@ -40,7 +40,7 @@ public class PatternValidator extends BaseJsonRequestValidator implements JsonRe
 		}
 		isPatternValid = PatternValidator.isValid(jsonFieldKeyValidator.pattern(), fieldValue+"");
 		if(!isPatternValid) {
-			errors = prepareFieldViolationMessage(jsonValidatorContext,ValidatorType.PATTERN,field,errors,path,"pattern error");	
+			errors = prepareFieldViolationMessage(currentInstance, jsonValidatorContext,ValidatorType.PATTERN,field,errors,path,"pattern error");	
 		}
 		return errors;
 	}

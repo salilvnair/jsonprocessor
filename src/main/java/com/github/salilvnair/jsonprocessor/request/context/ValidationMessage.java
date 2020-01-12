@@ -9,6 +9,7 @@ public class ValidationMessage {
     private MessageType type;
     private String path;
     private String message;
+    private String id;
     
 	public MessageType getType() {
 		return type;
@@ -32,5 +33,11 @@ public class ValidationMessage {
 	public String toString() {
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 		return gson.toJson(this);
+	}
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
 	}
 }

@@ -44,7 +44,7 @@ public class AlphaNumericValidator extends BaseJsonRequestValidator implements J
 				invalidAlphaNumericDetected = !(PatternValidator.isValid(patternString, columnStringValue));
 			}	
 			if(invalidAlphaNumericDetected) {
-				errors = prepareFieldViolationMessage(jsonValidatorContext,ValidatorType.NA, field, errors, path, "invalid alphanumric format");
+				errors = prepareFieldViolationMessage(currentInstance, jsonValidatorContext,ValidatorType.NA, field, errors, path, "invalid alphanumric format");
 			}
 		}
 		return errors;
