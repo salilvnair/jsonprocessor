@@ -43,13 +43,16 @@ public class CustomMethodValidator extends BaseJsonRequestValidator implements J
 							ValidationMessage validationMessage = new ValidationMessage();
 							validationMessage.setMessage(errorMessage);
 							validationMessage.setPath(path);
+							validationMessage.setId(extractCurrentInstanceId(currentInstance));
 							validationMessage.setType(jsonFieldKeyValidator.messageType());
 							errors.add(validationMessage);
 						}
 					}
 					else {
-						if(EMPTY_STRING.equals(jsonFieldKeyValidator.customTask()) &&
-								jsonFieldKeyValidator.customTasks().length>0) {
+						if(jsonFieldKeyValidator.customTasks().length>0) {
+							jsonValidatorContext.setPath(path);
+							jsonValidatorContext.setField(field);
+							jsonValidatorContext.setJsonRequest((JsonRequest) currentInstance);
 							String errorMessage = null;
 							StringBuilder errorMessageBuilder = new StringBuilder("");
 							for(String customTask:jsonFieldKeyValidator.customTasks()) {

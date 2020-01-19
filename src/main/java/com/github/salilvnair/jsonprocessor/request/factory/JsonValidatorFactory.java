@@ -105,6 +105,9 @@ public class JsonValidatorFactory {
 		if(!EMPTY_STRING.equals(jsonKeyValidator.customTask())) {
 			validators.add(new CustomMethodValidator(property));
 		}
+		if(EMPTY_STRING.equals(jsonKeyValidator.customTask()) && jsonKeyValidator.customTasks().length > 0) {
+			validators.add(new CustomMethodValidator(property));
+		}
 		if(jsonKeyValidator.minLength()!=-1 || jsonKeyValidator.maxLength()!=-1 || jsonKeyValidator.length()!=-1) {
 			validators.add(new LengthValidator(property));
 		}
