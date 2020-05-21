@@ -40,6 +40,7 @@ public class ListValidator extends BaseJsonRequestValidator implements JsonReque
 				errors.addAll(jsonProcessorUtil.validate(currentInstance, path, jsonValidatorContext));
 			}
 			nodeList = (List<?>) fieldValue;
+			jsonValidatorContext.setParent(field);
 		}
 		if(nodeList!=null) {
 			int i = 0;

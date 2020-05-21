@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.github.salilvnair.jsonprocessor.request.core.JsonRequest;
+import com.github.salilvnair.jsonprocessor.request.type.Mode;
 
 public class JsonValidatorContext {
 
@@ -17,6 +18,8 @@ public class JsonValidatorContext {
 	private Map<String,List<String>> validValuesDataSet;
 	private Map<String,String> userDefinedMessageDataSet;
 	private Field field;
+	private Field parent;
+	private Mode mode = Mode.STRICT;
 
 	public String getPath() {
 		return path;
@@ -89,6 +92,22 @@ public class JsonValidatorContext {
 
 	public void setRootList(List<?> rootList) {
 		this.rootList = rootList;
+	}
+
+	public Field getParent() {
+		return parent;
+	}
+
+	public void setParent(Field parent) {
+		this.parent = parent;
+	}
+
+	public Mode getMode() {
+		return mode;
+	}
+
+	public void setMode(Mode validationMode) {
+		this.mode = validationMode;
 	}	
 
 }

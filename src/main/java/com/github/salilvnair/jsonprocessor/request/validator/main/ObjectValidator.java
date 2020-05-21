@@ -13,6 +13,7 @@ import com.github.salilvnair.jsonprocessor.request.context.ValidationMessage;
 import com.github.salilvnair.jsonprocessor.request.helper.AnnotationUtil;
 import com.github.salilvnair.jsonprocessor.request.helper.JsonProcessorUtil;
 import com.github.salilvnair.jsonprocessor.request.type.JsonElementType;
+import com.github.salilvnair.jsonprocessor.request.type.Mode;
 import com.github.salilvnair.jsonprocessor.request.validator.core.BaseJsonRequestValidator;
 import com.github.salilvnair.jsonprocessor.request.validator.core.JsonRequestValidator;
 
@@ -30,9 +31,17 @@ public class ObjectValidator extends BaseJsonRequestValidator implements JsonReq
 			JsonValidatorContext jsonValidatorContext) {
 		List<ValidationMessage> errors = new ArrayList<ValidationMessage>();
 		for (Field property : properties) {
+			Field parent = jsonValidatorContext.getParent();
+			JsonKeyValidator fieldLevelJsonKeyValidator = property.getAnnotation(JsonKeyValidator.class);
+			if(!Mode.STRICT.equals(jsonValidatorContext.getMode()) &&
+				!Mode.STRICT.equals(fieldLevelJsonKeyValidator.mode()) && 
+				!fieldLevelJsonKeyValidator.mode().equals(jsonValidatorContext.getMode())) {
+					continue;
+			}
 			this.jsonProcessorUtil = new JsonProcessorUtil(property,JsonElementType.FIELD);
 			this.jsonProcessorUtil.setJsonValidatorContext(jsonValidatorContext);
-			errors.addAll(jsonProcessorUtil.validate(currentInstance,  path + "." + property.getName(),jsonValidatorContext));		
+			errors.addAll(jsonProcessorUtil.validate(currentInstance,  path + "." + property.getName(),jsonValidatorContext));
+			jsonValidatorContext.setParent(parent);
 		}
 		return Collections.unmodifiableList(errors);
 	}

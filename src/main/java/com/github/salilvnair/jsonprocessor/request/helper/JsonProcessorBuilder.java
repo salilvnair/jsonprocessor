@@ -7,6 +7,7 @@ import java.util.Map;
 import com.github.salilvnair.jsonprocessor.request.context.JsonValidatorContext;
 import com.github.salilvnair.jsonprocessor.request.context.ValidationMessage;
 import com.github.salilvnair.jsonprocessor.request.core.JsonRequest;
+import com.github.salilvnair.jsonprocessor.request.type.Mode;
 
 
 public class JsonProcessorBuilder {
@@ -26,6 +27,14 @@ public class JsonProcessorBuilder {
 	
 	public JsonProcessorBuilder request(JsonRequest jsonRequest) {
 		this.jsonRequest = jsonRequest;
+		return this;
+	}
+	
+	public JsonProcessorBuilder mode(Mode validationMode) {
+		if(this.jsonValidatorContext==null) {
+			this.jsonValidatorContext = new JsonValidatorContext();
+		}
+		jsonValidatorContext.setMode(validationMode);
 		return this;
 	}
 	

@@ -9,18 +9,19 @@ import com.github.salilvnair.jsonprocessor.request.constant.JsonKeyValidatorCons
 import com.github.salilvnair.jsonprocessor.request.core.JsonRequest;
 import com.github.salilvnair.jsonprocessor.request.test.task.SchoolCustomTask;
 import com.github.salilvnair.jsonprocessor.request.type.MessageType;
+import com.github.salilvnair.jsonprocessor.request.type.Mode;
 import com.github.salilvnair.jsonprocessor.request.type.ValidatorType;
 @JsonKeyValidator(id="School", customTaskValidator=SchoolCustomTask.class)
-public class School implements JsonRequest{
+public class School implements JsonRequest {
 	@JsonKeyValidator(required=true)
 	private long id;
-	@JsonKeyValidator(conditional=true,condition="someRandomCondition")
+	@JsonKeyValidator(conditional=true,condition="validateAlumini",mode=Mode.SYNC)
 	private String name;
-	@JsonKeyValidator(required=true)
+	@JsonKeyValidator(required=true, mode=Mode.SYNC)
 	private HeadMaster headMaster;
 	@JsonKeyValidator(
 		required=true,
-		minItems=4,		
+		minItems=4,	
 		userDefinedMessages = {
 				@UserDefinedMessage(
 						validatorType=ValidatorType.REQUIRED,

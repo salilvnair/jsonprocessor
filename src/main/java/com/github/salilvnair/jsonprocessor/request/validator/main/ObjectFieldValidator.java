@@ -27,6 +27,7 @@ public class ObjectFieldValidator extends BaseJsonRequestValidator implements Js
 		List<ValidationMessage> errors = new ArrayList<ValidationMessage>();
 		Object fieldValue = ReflectionUtil.getFieldValue(currentInstance, field.getName());
 		if(fieldValue!=null) {
+			jsonValidatorContext.setParent(field);
 			this.jsonProcessorUtil = new JsonProcessorUtil(fieldValue,JsonElementType.OBJECT);
 			if (jsonProcessorUtil != null) {
 				errors.addAll(jsonProcessorUtil.validate(fieldValue, path,jsonValidatorContext));

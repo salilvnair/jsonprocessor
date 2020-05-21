@@ -11,6 +11,7 @@ import com.github.salilvnair.jsonprocessor.request.test.bean.HeadMaster;
 import com.github.salilvnair.jsonprocessor.request.test.bean.School;
 import com.github.salilvnair.jsonprocessor.request.test.bean.Student;
 import com.github.salilvnair.jsonprocessor.request.test.bean.Subject;
+import com.github.salilvnair.jsonprocessor.request.type.Mode;
 
 public class TestMain {
 
@@ -32,15 +33,15 @@ public class TestMain {
 		headMaster.setName("John");
 		school.setStudents(students);
 		school.setHeadMaster(headMaster);
-		Map<String,Object> validatorMap  = new HashMap<>();
-		//validatorMap.put("alumini", "Kendriya Vidhyalaya");
-		validatorMap.put("alumini", "Delhi Public School");
-		school.setName("Kendriya Vidhyalaya 5");
+		school.setName("Bostan 5");
 		List<School> listRequest = new ArrayList<>();
 		listRequest.add(school);
+		Map<String,Object> validatorMap  = new HashMap<>();
+		validatorMap.put("alumini", "Hogward");
 		JsonProcessorBuilder jsonProcessorBuilder = new JsonProcessorBuilder();
-		List<ValidationMessage>  validationMsgList  = jsonProcessorBuilder
+		List<ValidationMessage>  validationMsgList  = jsonProcessorBuilder														
 														.request(school)
+														.mode(Mode.SYNC)
 														.setUserValidatorMap(validatorMap)
 														.validate();
 		System.out.println(validationMsgList);

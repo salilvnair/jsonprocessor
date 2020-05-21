@@ -11,11 +11,13 @@ import com.github.salilvnair.jsonprocessor.request.helper.DateParsingUtil.DateTi
 import com.github.salilvnair.jsonprocessor.request.task.AbstractCustomJsonValidatorTask;
 import com.github.salilvnair.jsonprocessor.request.type.MessageType;
 import com.github.salilvnair.jsonprocessor.request.type.Numeric;
+import com.github.salilvnair.jsonprocessor.request.type.Mode;
 
 @Retention(RUNTIME)
 @Target({ElementType.FIELD, ElementType.TYPE})
 public @interface JsonKeyValidator {
 	String id() default "";
+	Mode mode() default Mode.STRICT;
 	boolean required() default false; 
     int minItems() default 0;
     long maxItems() default -1L;

@@ -6,9 +6,10 @@ import com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidator;
 import com.github.salilvnair.jsonprocessor.request.annotation.ValidValues;
 import com.github.salilvnair.jsonprocessor.request.core.JsonRequest;
 import com.github.salilvnair.jsonprocessor.request.helper.DateParsingUtil.DateFormat;
+import com.github.salilvnair.jsonprocessor.request.type.Mode;
 
 @JsonKeyValidator(id="Student")
-public class Student implements JsonRequest{
+public class Student implements JsonRequest {
 	@JsonKeyValidator(required=true)
 	private String name;
 	@JsonKeyValidator(alphaNumeric=true)
@@ -16,7 +17,7 @@ public class Student implements JsonRequest{
 	private String section;
 	@JsonKeyValidator(dateString=true,dateFormat=DateFormat.SLASH_MM_DD_YYYY)
 	private String dateOfBirth;
-	@JsonKeyValidator(required=true)
+	@JsonKeyValidator(required=true, mode=Mode.SYNC)
 	private String gender;
 	@JsonKeyValidator(required=true)
 	private List<Subject> subjects;
