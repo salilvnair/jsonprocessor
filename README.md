@@ -17,7 +17,17 @@
 > Pass an Object Instance or List instance directly to the validation util.
 
 ## Steps:
-> 1. Annotate a class or a field using  `@JsonKeyValidator ` , class should be implementing the marker interface named `JsonRequest `
+> 1. Add Maven dependency
+
+```java
+<dependency>
+    <groupId>com.github.salilvnair</groupId>
+    <artifactId>jsonprocessor</artifactId>
+    <version>1.0.5</version>
+</dependency>
+```
+
+> 2. Annotate a class or a field using  `@JsonKeyValidator ` , class should be implementing the marker interface named `JsonRequest `
 ```java
 @JsonKeyValidator 
 public class School implements JsonRequest {
@@ -25,7 +35,7 @@ public class School implements JsonRequest {
 }
 ```
 
-> 2. Set it as required, conditional, numeric, email erc.
+> 3. Set it as required, conditional, numeric, email erc.
 
 ```java
 @JsonKeyValidator(required=true, numeric=true)
@@ -42,14 +52,14 @@ private String name;
 private String email;
 ```
 
-> 3. Call the processor using `JsonProcessorBuilder`
+> 4. Call the processor using `JsonProcessorBuilder`
 
 ```java
 List<ValidationMessage>  validationMsgList  = new JsonProcessorBuilder()
                                                      .request(school)
                                                      .validate();
 ```
-> 4. User defined map can be passed in the `JsonProcessorBuilder` which can be later used in customTask(s) or in Conditional validators.
+> 5. User defined map can be passed in the `JsonProcessorBuilder` which can be later used in customTask(s) or in Conditional validators.
 		
 ```java
 Map<String,Object> validatorMap  = new HashMap<>();
