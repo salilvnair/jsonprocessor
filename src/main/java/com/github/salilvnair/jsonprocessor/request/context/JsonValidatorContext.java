@@ -1,7 +1,7 @@
 package com.github.salilvnair.jsonprocessor.request.context;
 
 import java.lang.reflect.Field;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,6 +20,7 @@ public class JsonValidatorContext {
 	private Field field;
 	private Field parent;
 	private Mode mode = Mode.STRICT;
+	private Map<String, List<PathInfoContext>> fieldPathInfo;
 
 	public String getPath() {
 		return path;
@@ -39,7 +40,7 @@ public class JsonValidatorContext {
 
 	public Map<String,Object> getUserValidatorMap() {
 		if(userValidatorMap==null) {
-			return Collections.emptyMap();
+			userValidatorMap = new HashMap<>();
 		}
 		return userValidatorMap;
 	}
@@ -50,7 +51,7 @@ public class JsonValidatorContext {
 
 	public Map<String,List<String>> getValidValuesDataSet() {
 		if(validValuesDataSet==null) {
-			return Collections.emptyMap();
+			validValuesDataSet = new HashMap<>();
 		}
 		return validValuesDataSet;
 	}
@@ -61,7 +62,7 @@ public class JsonValidatorContext {
 
 	public Map<String,String> getUserDefinedMessageDataSet() {
 		if(userDefinedMessageDataSet==null) {
-			return Collections.emptyMap();
+			userDefinedMessageDataSet = new HashMap<>();
 		}
 		return userDefinedMessageDataSet;
 	}
@@ -99,6 +100,16 @@ public class JsonValidatorContext {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+	public Map<String, List<PathInfoContext>> getFieldPathInfo() {
+		if(fieldPathInfo==null) {
+			fieldPathInfo = new HashMap<>();
+		}
+		return fieldPathInfo;
+	}
+
+	public void setFieldPathInfo(Map<String, List<PathInfoContext>> fieldPathInfo) {
+		this.fieldPathInfo = fieldPathInfo;
 	}
 
 	public Field getParent() {
