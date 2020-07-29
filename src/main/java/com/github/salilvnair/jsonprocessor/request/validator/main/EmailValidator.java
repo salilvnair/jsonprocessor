@@ -2,6 +2,7 @@ package com.github.salilvnair.jsonprocessor.request.validator.main;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -31,7 +32,14 @@ public class EmailValidator extends BaseJsonRequestValidator implements JsonRequ
 		boolean isFieldTypeEmail = jsonFieldKeyValidator.email();
 		boolean invalidEmail = false;
 		if(isFieldTypeEmail) {
-			if((!jsonFieldKeyValidator.allowNull() && fieldValue==null)  || ((!jsonFieldKeyValidator.allowEmpty()||!jsonFieldKeyValidator.allowNull()) && EMPTY_STRING.equals(fieldValue))){
+			if(jsonFieldKeyValidator.allowNull() && fieldValue==null) {
+				return Collections.unmodifiableList(errors);
+			}
+			else if(jsonFieldKeyValidator.allowEmpty() && (fieldValue==null || EMPTY_STRING.equals(fieldValue))) {
+				return Collections.unmodifiableList(errors);
+			}
+			else if((!jsonFieldKeyValidator.allowNull() && fieldValue==null)  
+					|| (!jsonFieldKeyValidator.allowEmpty() && (fieldValue==null || EMPTY_STRING.equals(fieldValue)))){
 				invalidEmail = true;
 			}
 			else if(fieldValue instanceof String) {
@@ -39,11 +47,11 @@ public class EmailValidator extends BaseJsonRequestValidator implements JsonRequ
 				invalidEmail = !EmailValidator.isValid(columnStringValue);
 			}
 			if(invalidEmail) {
-				errors = prepareFieldViolationMessage(currentInstance, jsonValidatorContext,ValidatorType.EMAIL,field,errors,path,"invalid email error");
+				errors = prepareFieldViolationMessage(currentInstance,jsonValidatorContext,ValidatorType.EMAIL,field,errors,path,"invalid email error");
 			}
 			
 		}
-		return errors;
+		return Collections.unmodifiableList(errors);
 	}
 	
 	public static boolean isValid(String emailString) {

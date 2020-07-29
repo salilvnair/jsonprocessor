@@ -2,6 +2,7 @@ package com.github.salilvnair.jsonprocessor.request.validator.main;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.lang.math.NumberUtils;
@@ -43,7 +44,14 @@ public class NumericValidator extends BaseJsonRequestValidator implements JsonRe
 		}
 		boolean invalidNumericDetected = false;
 		if(isFieldNumeric) {
-			if((!jsonFieldKeyValidator.allowNull() && columnValue==null)  || ((!jsonFieldKeyValidator.allowEmpty()||!jsonFieldKeyValidator.allowNull()) && EMPTY_STRING.equals(columnValue))){
+			if(jsonFieldKeyValidator.allowNull() && columnValue==null) {
+				return Collections.unmodifiableList(errors);
+			}
+			else if(jsonFieldKeyValidator.allowEmpty() && (columnValue==null || EMPTY_STRING.equals(columnValue))) {
+				return Collections.unmodifiableList(errors);
+			}
+			else if((!jsonFieldKeyValidator.allowNull() && columnValue==null)  
+					|| (!jsonFieldKeyValidator.allowEmpty() && (columnValue==null || EMPTY_STRING.equals(columnValue)))){
 				invalidNumericDetected = true;
 			}
 			else if(columnValue instanceof String) {
@@ -86,10 +94,10 @@ public class NumericValidator extends BaseJsonRequestValidator implements JsonRe
 				}
 			}
 			if(invalidNumericDetected) {
-				errors = prepareFieldViolationMessage(currentInstance, jsonValidatorContext,ValidatorType.NA,field, errors, path, typeOfNumeric.name()+" error");
+				errors = prepareFieldViolationMessage(currentInstance,jsonValidatorContext,ValidatorType.NUMERIC,field, errors, path, typeOfNumeric.value()+" format invalid error!");
 			}
 		}
-		return errors;
+		return Collections.unmodifiableList(errors);
 	
 	}
 }

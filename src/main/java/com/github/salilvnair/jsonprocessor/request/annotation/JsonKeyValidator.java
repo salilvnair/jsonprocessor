@@ -29,9 +29,15 @@ public @interface JsonKeyValidator {
 	boolean date() default false;
 	boolean dateString() default false;
 	boolean dateTimeString() default false;
+	boolean convertIntoDateString() default false;
+	boolean convertIntoDateTimeString() default false;
 	DateFormat dateFormat() default DateFormat.DASH_MM_DD_YYYY;
 	DateTimeFormat dateTimeFormat() default DateTimeFormat.SLASH_MM_DD_YYYY_HH_MM;
-	String dateEquals() default "";
+	String dateEq() default "";
+	String dateLt() default "";
+	String dateGt() default "";
+	String dateLte() default "";
+	String dateGte() default "";
 	String minDate() default "";
 	String maxDate() default "";
 	boolean email() default false;

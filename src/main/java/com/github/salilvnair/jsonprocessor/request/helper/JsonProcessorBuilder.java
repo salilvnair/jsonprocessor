@@ -25,6 +25,22 @@ public class JsonProcessorBuilder {
 		return this;
 	}
 	
+	public JsonProcessorBuilder setValidValuesDataSet(Map<String,List<String>> validValuesDataSet) {
+		if(this.jsonValidatorContext==null) {
+			this.jsonValidatorContext = new JsonValidatorContext();
+		}
+		jsonValidatorContext.setValidValuesDataSet(validValuesDataSet);
+		return this;
+	}
+	
+	public JsonProcessorBuilder setUserDefinedMessageDataSet(Map<String,String> userDefinedMessageDataSet) {
+		if(this.jsonValidatorContext==null) {
+			this.jsonValidatorContext = new JsonValidatorContext();
+		}
+		jsonValidatorContext.setUserDefinedMessageDataSet(userDefinedMessageDataSet);
+		return this;
+	}
+	
 	public JsonProcessorBuilder request(JsonRequest jsonRequest) {
 		this.jsonRequest = jsonRequest;
 		return this;

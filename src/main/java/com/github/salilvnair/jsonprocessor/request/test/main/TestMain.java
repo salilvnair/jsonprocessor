@@ -18,8 +18,12 @@ public class TestMain {
 	public static void main(String[] args) {
 		School school = new School();
 		school.setId(1);
+		school.setTotalStudents("");
+		school.setName("Kendriya Vidhayala");
+		school.setYear("12/12/2019");
 		Student student = new Student();
 		student.setName("Test A");
+		student.setDateOfAdmission("07/15/2020");
 		student.setDateOfBirth("10/10/1990 12:00");
 		student.setSection("10C");
 		Subject sub = new Subject();
@@ -30,7 +34,8 @@ public class TestMain {
 		ArrayList<Student> students = new ArrayList<>();
 		students.add(student);
 		HeadMaster headMaster = new HeadMaster();
-		headMaster.setName("John");
+		headMaster.setAge(20);
+		headMaster.setName("Z");
 		school.setStudents(students);
 		school.setHeadMaster(headMaster);
 		school.setName("Bostan 5");

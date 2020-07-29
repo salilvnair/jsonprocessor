@@ -9,7 +9,7 @@ import com.github.salilvnair.jsonprocessor.request.core.JsonRequest;
 import com.github.salilvnair.jsonprocessor.request.type.Mode;
 
 public class JsonValidatorContext {
-
+	private String id;
 	private String path;
 	private JsonRequest jsonRequest;
 	private JsonRequest rootRequest;
@@ -92,6 +92,13 @@ public class JsonValidatorContext {
 
 	public void setRootList(List<?> rootList) {
 		this.rootList = rootList;
+	}
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public Field getParent() {

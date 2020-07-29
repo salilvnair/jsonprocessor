@@ -2,6 +2,7 @@ package com.github.salilvnair.jsonprocessor.request.validator.main;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -11,6 +12,7 @@ import com.github.salilvnair.jsonprocessor.request.context.ValidationMessage;
 import com.github.salilvnair.jsonprocessor.request.helper.DateParsingUtil;
 import com.github.salilvnair.jsonprocessor.request.helper.DateParsingUtil.DateFormat;
 import com.github.salilvnair.jsonprocessor.request.helper.DateParsingUtil.DateTimeFormat;
+import com.github.salilvnair.jsonprocessor.request.helper.DateParsingUtil.DateType;
 import com.github.salilvnair.jsonprocessor.request.helper.ReflectionUtil;
 import com.github.salilvnair.jsonprocessor.request.type.ValidatorType;
 import com.github.salilvnair.jsonprocessor.request.validator.core.BaseJsonRequestValidator;
@@ -48,6 +50,41 @@ public class DateValidator extends BaseJsonRequestValidator implements JsonReque
 		return false;
 	}
 	
+	public static boolean dateEquals(Date inputDate, Date targetDate) {
+		if(DateParsingUtil.compareDate(targetDate, inputDate)==0) {
+			return true;
+		}
+		return false;
+	}
+	
+	public static boolean dateGt(Date inputDate, Date targetDate) {
+		if(DateParsingUtil.compareDate(inputDate, targetDate) > 0) {
+			return true;
+		}
+		return false;
+	}
+	
+	public static boolean dateLt(Date inputDate, Date targetDate) {
+		if(DateParsingUtil.compareDate(inputDate, targetDate) < 0) {
+			return true;
+		}
+		return false;
+	}
+	
+	public static boolean dateGte(Date inputDate, Date targetDate) {
+		if(DateParsingUtil.compareDate(inputDate, targetDate) >= 0) {
+			return true;
+		}
+		return false;
+	}
+	
+	public static boolean dateLte(Date inputDate, Date targetDate) {
+		if(DateParsingUtil.compareDate(inputDate, targetDate) <= 0) {
+			return true;
+		}
+		return false;
+	}
+	
 	public static boolean isValidDate(String inputDateString,boolean dateTime) {
 		if(dateTime) {
 			return DateParsingUtil.isDateTime(inputDateString);
@@ -77,22 +114,23 @@ public class DateValidator extends BaseJsonRequestValidator implements JsonReque
 		boolean invalidDate = false;
 		if(isFieldTypeDate) {
 			String errorMessage = null;
-			if((!jsonFieldKeyValidator.allowNull() && columnValue==null)  || ((!jsonFieldKeyValidator.allowEmpty()||!jsonFieldKeyValidator.allowNull()) && EMPTY_STRING.equals(columnValue))){
+			if(jsonFieldKeyValidator.allowNull() && columnValue==null) {
+				return Collections.unmodifiableList(errors);
+			}
+			else if(jsonFieldKeyValidator.allowEmpty() && (columnValue==null || EMPTY_STRING.equals(columnValue))) {
+				return Collections.unmodifiableList(errors);
+			}
+			else if((!jsonFieldKeyValidator.allowNull() && columnValue==null)  
+					|| (!jsonFieldKeyValidator.allowEmpty() && (columnValue==null || EMPTY_STRING.equals(columnValue)))){
 				invalidDate = true;
 				if(!jsonFieldKeyValidator.required()) {
-					if(jsonFieldKeyValidator.allowEmpty() && columnValue==null) {
-						errorMessage = "field cannot be null";
-					}
-					else {
-						errorMessage = "field cannot be null or empty ";
-					}
-					
+					errorMessage = "field cannot be null or empty ";					
 				}
 			}
 			else if(columnValue instanceof Date) {
 				Date dateColumnValue = (Date) columnValue;
-				if(!EMPTY_STRING.equals(jsonFieldKeyValidator.dateEquals())) {
-					invalidDate = !DateValidator.isValidSameDate(dateColumnValue, jsonFieldKeyValidator.dateEquals());
+				if(!EMPTY_STRING.equals(jsonFieldKeyValidator.dateEq())) {
+					invalidDate = !DateValidator.isValidSameDate(dateColumnValue, jsonFieldKeyValidator.dateEq());
 					if(invalidDate) {
 						errorMessage = "date not equals error";
 					}
@@ -107,7 +145,22 @@ public class DateValidator extends BaseJsonRequestValidator implements JsonReque
 				}
 			}	
 			else if(columnValue instanceof String) {
-				if(jsonFieldKeyValidator.dateString() && !DateValidator.isValidDate((String) columnValue,false)) {
+				if(jsonFieldKeyValidator.date()) {
+					DateFormat dateFormat = jsonFieldKeyValidator.dateFormat();
+					String dateString = (String)columnValue;
+					invalidDate = !isValidDate(dateString, dateFormat);
+					if(invalidDate) {
+						errorMessage = "invalid date format";
+					}
+					else {
+						Date dateColumnValue = DateParsingUtil.parseDate(dateString, dateFormat);
+						errorMessage = validateDateStringUsingMetadata(dateColumnValue, jsonFieldKeyValidator, jsonValidatorContext);
+						if(errorMessage!=null) {
+							invalidDate = true;
+						}
+					}				
+				}
+				else if(jsonFieldKeyValidator.dateString() && !DateValidator.isValidDate((String) columnValue,false)) {
 					invalidDate = true;
 					errorMessage = "invalid date string";
 					
@@ -115,23 +168,99 @@ public class DateValidator extends BaseJsonRequestValidator implements JsonReque
 				else if(jsonFieldKeyValidator.dateTimeString() && !DateValidator.isValidDate((String) columnValue,true)) {
 					invalidDate = true;
 					errorMessage = "invalid date time string";
-				}
-				if(errorMessage==null) {
-					if(jsonFieldKeyValidator.dateString()) {
-						invalidDate = !DateValidator.isValidDate((String) columnValue,jsonFieldKeyValidator.dateFormat());
-						errorMessage = "invalid date format expected format["+jsonFieldKeyValidator.dateFormat().value()+"]";
-
-					}
-					else if(jsonFieldKeyValidator.dateTimeString()) {
-						invalidDate = !DateValidator.isValidDate((String) columnValue,jsonFieldKeyValidator.dateTimeFormat());
-						errorMessage = "invalid date time format expected format["+jsonFieldKeyValidator.dateTimeFormat().value()+"]";
-					}
 				}				
 			}
 			if(invalidDate && errorMessage!=null) {
-				errors = prepareFieldViolationMessage(currentInstance, jsonValidatorContext,ValidatorType.DATE,field, errors, path, errorMessage);
+				errors = prepareFieldViolationMessage(currentInstance,jsonValidatorContext,ValidatorType.DATE,field, errors, path, errorMessage);
+			}
+			if(!invalidDate) {
+				convertIntoDesiredDateType(columnValue,currentInstance,jsonFieldKeyValidator);
 			}
 		}
-		return errors;
+		return Collections.unmodifiableList(errors);
+	}
+
+	private String validateDateStringUsingMetadata(Date dateColumnValue, JsonKeyValidator jsonFieldKeyValidator,
+			JsonValidatorContext jsonValidatorContext) {
+		String errorMessage = null;
+		boolean invalidDate = false;
+		if(!EMPTY_STRING.equals(jsonFieldKeyValidator.dateEq())) {
+			Date dateValue = null;
+			if(DateType.Value.TODAY.equals(jsonFieldKeyValidator.dateEq())) {
+				dateValue = new Date();
+			}
+			if(dateValue!=null) {
+				invalidDate = !DateValidator.dateEquals(dateColumnValue, dateValue);
+				if(invalidDate) {
+					errorMessage = "date not equals error";
+				}	
+			}
+		}
+		else if(!EMPTY_STRING.equals(jsonFieldKeyValidator.dateLt())) {
+			Date dateValue = null;
+			if(DateType.Value.TODAY.equals(jsonFieldKeyValidator.dateLt())) {
+				dateValue = new Date();
+			}
+			if(dateValue!=null) {
+				invalidDate = !DateValidator.dateLt(dateColumnValue, dateValue);
+				if(invalidDate) {
+					errorMessage = "date not less than expected date error";
+				}	
+			}
+		}
+		else if(!EMPTY_STRING.equals(jsonFieldKeyValidator.dateGt())) {
+			Date dateValue = null;
+			if(DateType.Value.TODAY.equals(jsonFieldKeyValidator.dateGt())) {
+				dateValue = new Date();
+			}
+			if(dateValue!=null) {
+				invalidDate = !DateValidator.dateGt(dateColumnValue, dateValue);
+				if(invalidDate) {
+					errorMessage = "date not greater than expected date error";
+				}	
+			}
+		}
+		else if(!EMPTY_STRING.equals(jsonFieldKeyValidator.dateLte())) {
+			Date dateValue = null;
+			if(DateType.Value.TODAY.equals(jsonFieldKeyValidator.dateLte())) {
+				dateValue = new Date();
+			}
+			if(dateValue!=null) {
+				invalidDate = !DateValidator.dateLte(dateColumnValue, dateValue);
+				if(invalidDate) {
+					errorMessage = "date not less than or equals to expected date error";
+				}	
+			}
+		}
+		else if(!EMPTY_STRING.equals(jsonFieldKeyValidator.dateGte())) {
+			Date dateValue = null;
+			if(DateType.Value.TODAY.equals(jsonFieldKeyValidator.dateGte())) {
+				dateValue = new Date();
+			}
+			if(dateValue!=null) {
+				invalidDate = !DateValidator.dateGte(dateColumnValue, dateValue);
+				if(invalidDate) {
+					errorMessage = "date not greater than or equals to expected date error";
+				}	
+			}
+		}
+		return errorMessage;
+	}
+
+	private void convertIntoDesiredDateType(Object columnValue, Object currentInstance,
+			JsonKeyValidator jsonFieldKeyValidator) {
+		if(columnValue instanceof String) {
+			String jsonDateValue = (String) columnValue;
+			 if(jsonFieldKeyValidator.convertIntoDateTimeString()){				 
+				Date inputDate = DateParsingUtil.parseDate(jsonDateValue,DateFormat.getAllDateFormats());
+				jsonDateValue = DateParsingUtil.getDesiredDateTimeFormat(jsonFieldKeyValidator.dateTimeFormat(), inputDate);
+				ReflectionUtil.setFieldValue(currentInstance, field.getName(), jsonDateValue);
+			 }
+			 else if(jsonFieldKeyValidator.convertIntoDateString()){
+				Date inputDate = DateParsingUtil.parseDate(jsonDateValue,DateFormat.getAllDateFormats());
+				jsonDateValue = DateParsingUtil.getDesiredDateFormat(jsonFieldKeyValidator.dateFormat(), inputDate);
+				ReflectionUtil.setFieldValue(currentInstance, field.getName(), jsonDateValue);
+			 }
+		}
 	}
 }

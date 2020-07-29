@@ -54,6 +54,7 @@ public class DateParsingUtil {
 	        
 	        SLASH_YY_M_D("yy/M/d"),
 	        SLASH_D_M_YY("d/M/yy"),
+	        SLASH_DD_M_YY("dd/M/yyyy"),
 	        SLASH_YY_MM_DD("yy/MM/dd"),
 	        SLASH_DD_MM_YY("dd/MM/yy"),
 	        SLASH_YY_MMM_DD("yy/MMM/dd"), 
@@ -93,6 +94,13 @@ public class DateParsingUtil {
 	        }
 	       
 	    }
+	 	
+	 	public enum DateType {
+	 		;
+	 		public static class Value {
+		 		public static final String TODAY = "TODAY";
+		 	}
+		 }
 	 
 	 	public enum DateTimeFormat {   
 	 		DASH_MM_DD_YYYY_HH_MM("MM-dd-yyyy HH:mm"),
@@ -150,9 +158,9 @@ public class DateParsingUtil {
 	 	}
 
 
-	    public static long getDateOnly(String date) {
-	        SimpleDateFormat sample = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+	    public static long getDateOnly(String date) {	        
 	        try {
+	        	SimpleDateFormat sample = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
 	            return sample.parse(date).getTime();
 	        } 
 	        catch (Exception e) {
@@ -219,9 +227,9 @@ public class DateParsingUtil {
 	    }
 
 	    
-	    public static long getDaysBetweenTwoDate(String old, String newDate, DateFormat dateFormat) {
-	        SimpleDateFormat myFormat = new SimpleDateFormat(dateFormat.value(), Locale.getDefault());
+	    public static long getDaysBetweenTwoDate(String old, String newDate, DateFormat dateFormat) {	        
 	        try {
+	        	SimpleDateFormat myFormat = new SimpleDateFormat(dateFormat.value(), Locale.getDefault());
 	            Date date1 = myFormat.parse(old);
 	            Date date2 = myFormat.parse(newDate);
 	            long diff = date1.getTime() - date2.getTime();
@@ -237,9 +245,9 @@ public class DateParsingUtil {
 	        return 0;
 	    }
 
-	    public static long getHoursBetweenTwoDate(String old, String newDate, DateFormat dateFormat) {
-	        SimpleDateFormat myFormat = new SimpleDateFormat(dateFormat.value(), Locale.getDefault());
+	    public static long getHoursBetweenTwoDate(String old, String newDate, DateFormat dateFormat) {	        
 	        try {
+	        	SimpleDateFormat myFormat = new SimpleDateFormat(dateFormat.value(), Locale.getDefault());
 	            Date date1 = myFormat.parse(old);
 	            Date date2 = myFormat.parse(newDate);
 	            long diff = date1.getTime() - date2.getTime();
@@ -254,9 +262,9 @@ public class DateParsingUtil {
 	        return 0;
 	    }
 
-	    public static long getMinutesBetweenTwoDates(String old, String newDate, DateFormat dateFormat) {
-	        SimpleDateFormat myFormat = new SimpleDateFormat(dateFormat.value(), Locale.getDefault());
+	    public static long getMinutesBetweenTwoDates(String old, String newDate, DateFormat dateFormat) {	        
 	        try {
+	        	SimpleDateFormat myFormat = new SimpleDateFormat(dateFormat.value(), Locale.getDefault());
 	            Date date1 = myFormat.parse(old);
 	            Date date2 = myFormat.parse(newDate);
 	            long diff = date1.getTime() - date2.getTime();
@@ -283,6 +291,18 @@ public class DateParsingUtil {
 	    }
 	    
 	    public static int compareDate(Date date1, Date date2) {
+	    	Calendar cal1 = Calendar.getInstance();
+	    	Calendar cal2 = Calendar.getInstance();
+	    	cal1.setTime(date1);
+	    	cal2.setTime(date2);
+	    	String formattedDate1 = cal1.get(Calendar.DAY_OF_MONTH)+"/"+(cal1.get(Calendar.MONTH)+1)+"/"+cal1.get(Calendar.YEAR);
+	    	String formattedDate2 = cal2.get(Calendar.DAY_OF_MONTH)+"/"+(cal1.get(Calendar.MONTH)+1)+"/"+cal1.get(Calendar.YEAR);
+	    	Date extractedDate1 = parseDate(formattedDate1, DateFormat.SLASH_DD_M_YY);
+	        Date extractedDate2 = parseDate(formattedDate2, DateFormat.SLASH_DD_M_YY);
+	        return extractedDate1.compareTo(extractedDate2);
+	    }
+	    
+	    public static int compareDateTime(Date date1, Date date2) {
 	    	if(date1.getTime()==date2.getTime()) {
 	    		return 0;
 	    	}
@@ -292,7 +312,6 @@ public class DateParsingUtil {
 	    	else {
 	    		return -1;
 	    	}
-	    	
 	    }
 
 	    public static Date parseAnyDate(String dateString) {
@@ -392,9 +411,9 @@ public class DateParsingUtil {
            return isFormattedDate;
 	    }
 
-	    public static Date parseDate(String dateString, String dateFormat) {
-	        SimpleDateFormat format = new SimpleDateFormat(dateFormat, Locale.getDefault());
+	    public static Date parseDate(String dateString, String dateFormat) {	       
 	        try {
+	        	SimpleDateFormat format = new SimpleDateFormat(dateFormat, Locale.getDefault());
 	            return format.parse(dateString);
 	        } 
 	        catch (Exception e) {
@@ -408,9 +427,9 @@ public class DateParsingUtil {
 	    	return parseDate(dateString,  format);
 	    }
 	    
-	    public static Date parseDate(String dateString, DateFormat dateFormat) {
-	        SimpleDateFormat format = new SimpleDateFormat(dateFormat.value(), Locale.getDefault());
+	    public static Date parseDate(String dateString, DateFormat dateFormat) {	        
 	        try {
+	        	SimpleDateFormat format = new SimpleDateFormat(dateFormat.value(), Locale.getDefault());
 	            return format.parse(dateString);
 	        } 
 	        catch (Exception e) {
@@ -419,9 +438,9 @@ public class DateParsingUtil {
 	        return null;
 	    }
 	    
-	    public static Date parseDate(String dateTimeString, DateTimeFormat dateTimeFormat) {
-	        SimpleDateFormat format = new SimpleDateFormat(dateTimeFormat.value(), Locale.getDefault());
+	    public static Date parseDate(String dateTimeString, DateTimeFormat dateTimeFormat) {	        
 	        try {
+	        	SimpleDateFormat format = new SimpleDateFormat(dateTimeFormat.value(), Locale.getDefault());
 	            return format.parse(dateTimeString);
 	        } 
 	        catch (Exception e) {
@@ -430,9 +449,9 @@ public class DateParsingUtil {
 	        return null;
 	    }
 
-	    public static String getDate(String date, DateFormat orginalFormat, DateFormat newFormat) {
-	        SimpleDateFormat sample = new SimpleDateFormat(orginalFormat.value(), Locale.getDefault());
+	    public static String getDate(String date, DateFormat orginalFormat, DateFormat newFormat) {	        
 	        try {
+	        	SimpleDateFormat sample = new SimpleDateFormat(orginalFormat.value(), Locale.getDefault());
 	            long time = sample.parse(date).getTime();
 	            sample = new SimpleDateFormat(newFormat.value(), Locale.getDefault());
 	            return sample.format(time);

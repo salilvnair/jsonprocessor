@@ -14,6 +14,6 @@ import com.github.salilvnair.jsonprocessor.request.type.ValidatorType;
 public @interface UserDefinedMessage {
 	ValidatorType validatorType();
 	String message() default "";
-	String id()  default "";
+	String messageId()  default "";
 	MessageType messageType() default MessageType.ERROR;
 }

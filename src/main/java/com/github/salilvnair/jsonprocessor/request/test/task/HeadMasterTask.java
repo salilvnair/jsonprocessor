@@ -11,5 +11,27 @@ public class HeadMasterTask extends AbstractCustomJsonValidatorTask{
 		jsonValidatorContext.getUserValidatorMap().put("hm", headerMaster);
 	}
 	
+	public boolean ageGt18(JsonValidatorContext jsonValidatorContext) {
+		HeadMaster headerMaster = (HeadMaster) jsonValidatorContext.getJsonRequest();
+		Integer age = headerMaster.getAge();
+		if(age == null) {
+			return false;
+		}
+		else {
+			return age > 18;
+		}
+	}
+	
+	public boolean ageLt18(JsonValidatorContext jsonValidatorContext) {
+		HeadMaster headerMaster = (HeadMaster) jsonValidatorContext.getJsonRequest();
+		Integer age = headerMaster.getAge();
+		if(age == null) {
+			return false;
+		}
+		else {
+			return age < 18;
+		}
+	}
+	
 	
 }

@@ -40,6 +40,10 @@ public class ObjectValidator extends BaseJsonRequestValidator implements JsonReq
 			}
 			this.jsonProcessorUtil = new JsonProcessorUtil(property,JsonElementType.FIELD);
 			this.jsonProcessorUtil.setJsonValidatorContext(jsonValidatorContext);
+			if(currentInstance!=null && currentInstance.getClass().isAnnotationPresent(JsonKeyValidator.class)) {
+				JsonKeyValidator jsonKeyValidator = currentInstance.getClass().getAnnotation(JsonKeyValidator.class);
+				jsonValidatorContext.setId(jsonKeyValidator.id());
+			}
 			errors.addAll(jsonProcessorUtil.validate(currentInstance,  path + "." + property.getName(),jsonValidatorContext));
 			jsonValidatorContext.setParent(parent);
 		}

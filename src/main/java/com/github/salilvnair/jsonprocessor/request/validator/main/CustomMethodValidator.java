@@ -42,6 +42,9 @@ public class CustomMethodValidator extends BaseJsonRequestValidator implements J
 						if(errorMessage!=null) {
 							ValidationMessage validationMessage = new ValidationMessage();
 							validationMessage.setMessage(errorMessage);
+							if(!EMPTY_STRING.equals(jsonFieldKeyValidator.messageId())) {
+								validationMessage.setMessageId(jsonFieldKeyValidator.messageId());
+							}
 							validationMessage.setPath(path);
 							validationMessage.setId(extractCurrentInstanceId(currentInstance));
 							validationMessage.setType(jsonFieldKeyValidator.messageType());
@@ -65,6 +68,9 @@ public class CustomMethodValidator extends BaseJsonRequestValidator implements J
 							if(!EMPTY_STRING.equals(errorMessageBuilder.toString())) {
 								errorMessage = errorMessageBuilder.toString().replaceAll(",$", "");
 								ValidationMessage validationMessage = new ValidationMessage();
+								if(!EMPTY_STRING.equals(jsonFieldKeyValidator.messageId())) {
+									validationMessage.setMessageId(jsonFieldKeyValidator.messageId());
+								}
 								validationMessage.setMessage(errorMessage);
 								validationMessage.setPath(path);
 								validationMessage.setId(extractCurrentInstanceId(currentInstance));
@@ -89,9 +95,15 @@ public class CustomMethodValidator extends BaseJsonRequestValidator implements J
 			
 		if(validatedTaskResponse instanceof String){
 			errorMessage = (String) validatedTaskResponse;
+			if(errorMessage!=null) {
+				hasInvalidData = true;
+			}
 		}
 		else if(validatedTaskResponse instanceof Boolean){
 			hasInvalidData =  (boolean) validatedTaskResponse;
+			if(hasInvalidData) {
+				errorMessage = "conditional error!";
+			}
 		}
 		if(hasInvalidData){
 			if(!EMPTY_STRING.equals(jsonFieldKeyValidator.message())){					

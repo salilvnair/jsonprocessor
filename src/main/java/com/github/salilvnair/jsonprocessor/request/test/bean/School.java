@@ -7,6 +7,7 @@ import com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidator;
 import com.github.salilvnair.jsonprocessor.request.annotation.UserDefinedMessage;
 import com.github.salilvnair.jsonprocessor.request.constant.JsonKeyValidatorConstant;
 import com.github.salilvnair.jsonprocessor.request.core.JsonRequest;
+import com.github.salilvnair.jsonprocessor.request.helper.DateParsingUtil.DateFormat;
 import com.github.salilvnair.jsonprocessor.request.test.task.SchoolCustomTask;
 import com.github.salilvnair.jsonprocessor.request.type.MessageType;
 import com.github.salilvnair.jsonprocessor.request.type.Mode;
@@ -21,7 +22,7 @@ public class School implements JsonRequest {
 	private HeadMaster headMaster;
 	@JsonKeyValidator(
 		required=true,
-		minItems=4,	
+		minItems=4,		
 		userDefinedMessages = {
 				@UserDefinedMessage(
 						validatorType=ValidatorType.REQUIRED,
@@ -36,6 +37,10 @@ public class School implements JsonRequest {
 		}
 	)
 	private ArrayList<Student> students;
+	@JsonKeyValidator(allowEmpty=true,numeric=true,message="numeric value is expected")
+	private String totalStudents;
+	@JsonKeyValidator(dateString=true, dateFormat=DateFormat.SLASH_MM_DD_YYYY,convertIntoDateTimeString=true)
+	private String year;
 	public long getId() {
 		return id;
 	}
@@ -60,5 +65,17 @@ public class School implements JsonRequest {
 	}
 	public void setHeadMaster(HeadMaster headMaster) {
 		this.headMaster = headMaster;
+	}
+	public String getTotalStudents() {
+		return totalStudents;
+	}
+	public void setTotalStudents(String totalStudents) {
+		this.totalStudents = totalStudents;
+	}
+	public String getYear() {
+		return year;
+	}
+	public void setYear(String year) {
+		this.year = year;
 	}
 }

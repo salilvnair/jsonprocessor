@@ -2,6 +2,7 @@ package com.github.salilvnair.jsonprocessor.request.validator.main;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidator;
@@ -32,10 +33,19 @@ public class LengthValidator extends BaseJsonRequestValidator implements JsonReq
 		boolean maxLengthViolated = false;
 		boolean lengthViolated = false;
 		Object fieldValue = ReflectionUtil.getFieldValue(currentInstance, field.getName());
+		if(jsonFieldKeyValidator.allowNull() && fieldValue==null) {
+			return Collections.unmodifiableList(errors);
+		}
+		else if(jsonFieldKeyValidator.allowEmpty() && (fieldValue==null || EMPTY_STRING.equals(fieldValue))) {
+			return Collections.unmodifiableList(errors);
+		}
 		if(minLength!=-1 || maxLength!=-1 || length!=-1) {
 			if(minLength>0) {
 				if(fieldValue==null || EMPTY_STRING.equals(fieldValue)){
-					minLengthViolated = true;
+					if((!jsonFieldKeyValidator.allowNull() && fieldValue==null)  
+							|| (!jsonFieldKeyValidator.allowEmpty() && (fieldValue==null || EMPTY_STRING.equals(fieldValue)))){
+						minLengthViolated = true;
+					}
 				}
 				else if(fieldValue instanceof String) {
 					String columnStringValue = (String) fieldValue;
@@ -56,8 +66,10 @@ public class LengthValidator extends BaseJsonRequestValidator implements JsonReq
 				}
 			}
 			if(maxLength>0) {
-				if(fieldValue==null || EMPTY_STRING.equals(fieldValue)){
-					maxLengthViolated = true;
+				if(fieldValue==null){
+					if((!jsonFieldKeyValidator.allowNull() && fieldValue==null)){
+						maxLengthViolated = true;
+					}
 				}
 				else if(fieldValue instanceof String) {
 					String columnStringValue = (String) fieldValue;
@@ -78,8 +90,11 @@ public class LengthValidator extends BaseJsonRequestValidator implements JsonReq
 				}
 			}
 			if(length>0) {
-				if((!jsonFieldKeyValidator.allowNull() && fieldValue==null)  || ((!jsonFieldKeyValidator.allowEmpty()||!jsonFieldKeyValidator.allowNull()) && EMPTY_STRING.equals(fieldValue))){
-					lengthViolated = true;
+				if(fieldValue==null || EMPTY_STRING.equals(fieldValue)){
+					if((!jsonFieldKeyValidator.allowNull() && fieldValue==null)  
+							|| (!jsonFieldKeyValidator.allowEmpty() && (fieldValue==null || EMPTY_STRING.equals(fieldValue)))){
+						lengthViolated = true;
+					}
 				}
 				else if(fieldValue instanceof String) {
 					String columnStringValue = (String) fieldValue;
@@ -100,15 +115,15 @@ public class LengthValidator extends BaseJsonRequestValidator implements JsonReq
 				}
 			}
 			if(minLengthViolated) {
-				errors = prepareFieldViolationMessage(currentInstance, jsonValidatorContext,ValidatorType.MINLENGTH,field,errors,path,"min length error");
+				errors = prepareFieldViolationMessage(currentInstance,jsonValidatorContext,ValidatorType.MINLENGTH,field,errors,path,"min length error");
 			}
 			if(maxLengthViolated) {
-				errors = prepareFieldViolationMessage(currentInstance, jsonValidatorContext,ValidatorType.MAXLENGTH,field,errors,path,"max length error");
+				errors = prepareFieldViolationMessage(currentInstance,jsonValidatorContext,ValidatorType.MAXLENGTH,field,errors,path,"max length error");
 			}
 			if(lengthViolated) {
-				errors = prepareFieldViolationMessage(currentInstance, jsonValidatorContext,ValidatorType.LENGTH,field,errors,path,"length error");
+				errors = prepareFieldViolationMessage(currentInstance,jsonValidatorContext,ValidatorType.LENGTH,field,errors,path,"length error");
 			}
 		}
-		return errors;
+		return Collections.unmodifiableList(errors);
 	}
 }

@@ -48,6 +48,7 @@
 	<version.common-log>1.2</version.common-log>
 	<version.common-lang>2.6</version.common-lang>
 	<version.common-lang3>3.8.1</version.common-lang3>
+	<version.common-collections4>4.4</version.common-collections4>
 	<version.jsonpath>2.4.0</version.jsonpath>
 	<maven.compiler.source>1.8</maven.compiler.source>
 	<maven.compiler.target>1.8</maven.compiler.target>
@@ -90,6 +91,12 @@
 			<version>${version.common-lang3}</version>
 		</dependency>
 		
+		<dependency>
+		    <groupId>org.apache.commons</groupId>
+		    <artifactId>commons-collections4</artifactId>
+		    <version>${version.common-collections4}</version>
+		</dependency>
+				
 		<dependency>
 		    <groupId>com.jayway.jsonpath</groupId>
 		    <artifactId>json-path</artifactId>

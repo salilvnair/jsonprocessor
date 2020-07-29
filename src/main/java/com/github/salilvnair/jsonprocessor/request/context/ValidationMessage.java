@@ -8,8 +8,9 @@ public class ValidationMessage {
 	
     private MessageType type;
     private String path;
-    private String message;
     private String id;
+    private String message;
+    private String messageId;
     
 	public MessageType getType() {
 		return type;
@@ -31,7 +32,7 @@ public class ValidationMessage {
 	}
 	@Override
 	public String toString() {
-		Gson gson = new GsonBuilder().setPrettyPrinting().create();
+		Gson gson = new GsonBuilder().create();
 		return gson.toJson(this);
 	}
 	public String getId() {
@@ -39,5 +40,11 @@ public class ValidationMessage {
 	}
 	public void setId(String id) {
 		this.id = id;
+	}
+	public String getMessageId() {
+		return messageId;
+	}
+	public void setMessageId(String messageId) {
+		this.messageId = messageId;
 	}
 }

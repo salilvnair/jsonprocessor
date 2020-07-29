@@ -2,6 +2,7 @@ package com.github.salilvnair.jsonprocessor.request.validator.main;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidator;
@@ -35,7 +36,14 @@ public class AlphaNumericValidator extends BaseJsonRequestValidator implements J
 		}
 		boolean invalidAlphaNumericDetected = false;
 		if(isFieldAlphaNumeric) {
-			if((!jsonFieldKeyValidator.allowNull() && columnValue==null)  || ((!jsonFieldKeyValidator.allowEmpty()||!jsonFieldKeyValidator.allowNull()) && EMPTY_STRING.equals(columnValue))){
+			if(jsonFieldKeyValidator.allowNull() && columnValue==null) {
+				return Collections.unmodifiableList(errors);
+			}
+			else if(jsonFieldKeyValidator.allowEmpty() && (columnValue==null || EMPTY_STRING.equals(columnValue))) {
+				return Collections.unmodifiableList(errors);
+			}
+			else if((!jsonFieldKeyValidator.allowNull() && columnValue==null)  
+					|| (!jsonFieldKeyValidator.allowEmpty() && (columnValue==null || EMPTY_STRING.equals(columnValue)))){
 				invalidAlphaNumericDetected = true;
 			}
 			else if(columnValue instanceof String) {
@@ -44,10 +52,10 @@ public class AlphaNumericValidator extends BaseJsonRequestValidator implements J
 				invalidAlphaNumericDetected = !(PatternValidator.isValid(patternString, columnStringValue));
 			}	
 			if(invalidAlphaNumericDetected) {
-				errors = prepareFieldViolationMessage(currentInstance, jsonValidatorContext,ValidatorType.NA, field, errors, path, "invalid alphanumric format");
+				errors = prepareFieldViolationMessage(currentInstance,jsonValidatorContext,ValidatorType.ALPHANUMERIC, field, errors, path, "invalid alphanumric format");
 			}
 		}
-		return errors;
+		return Collections.unmodifiableList(errors);
 	
 	}
 }

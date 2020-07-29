@@ -67,17 +67,20 @@ public class JsonValidatorFactory {
 	private static List<JsonRequestValidator> generateJsonFieldValidators(Field property) {
 		List<JsonRequestValidator> validators = new ArrayList<>();
 		JsonKeyValidator jsonKeyValidator = property.getAnnotation(JsonKeyValidator.class);
-		if(property.isAnnotationPresent(ValidValues.class)) {
-			ValidValues validValues = property.getAnnotation(ValidValues.class);
-			if(validValues.value().length>0 ||!EMPTY_STRING.equals(validValues.dataSetKey())) {
-				validators.add(new ValidValueValidator(property));
-			}
-		}
 		if(jsonKeyValidator.required()) {
 			validators.add(new RequiredValidator(property));
 		}
 		if(!EMPTY_STRING.equals(jsonKeyValidator.condition()) && jsonKeyValidator.conditional()) {
 			validators.add(new ConditionalValidator(property));
+		}
+		if(property.isAnnotationPresent(ValidValues.class)) {
+			ValidValues validValues = property.getAnnotation(ValidValues.class);
+			if(validValues.value().length>0 
+					|| validValues.range().length>1 
+					|| !EMPTY_STRING.equals(validValues.dataSetKey()) 
+					|| validValues.conditionalValue().length>0) {
+				validators.add(new ValidValueValidator(property));
+			}
 		}
 		//handle fields of type List,ArrayList...etc
 		if(List.class.isAssignableFrom(property.getType())) {

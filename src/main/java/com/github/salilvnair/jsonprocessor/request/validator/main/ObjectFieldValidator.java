@@ -33,7 +33,7 @@ public class ObjectFieldValidator extends BaseJsonRequestValidator implements Js
 				errors.addAll(jsonProcessorUtil.validate(fieldValue, path,jsonValidatorContext));
 			}
 		}
-		return errors;
+		return Collections.unmodifiableList(errors);
 	}
 	
 }

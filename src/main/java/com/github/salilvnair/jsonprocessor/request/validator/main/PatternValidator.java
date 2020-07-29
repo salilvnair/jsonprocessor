@@ -2,6 +2,7 @@ package com.github.salilvnair.jsonprocessor.request.validator.main;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -34,15 +35,24 @@ public class PatternValidator extends BaseJsonRequestValidator implements JsonRe
 		}
 		boolean isPatternValid = true;
 		if(fieldHasPattern) {
-			if((!jsonFieldKeyValidator.allowNull() && fieldValue==null)  || ((!jsonFieldKeyValidator.allowEmpty()||!jsonFieldKeyValidator.allowNull()) && EMPTY_STRING.equals(fieldValue))){
+			if(jsonFieldKeyValidator.allowNull() && fieldValue==null) {
+				return Collections.unmodifiableList(errors);
+			}
+			else if(jsonFieldKeyValidator.allowEmpty() && (fieldValue==null || EMPTY_STRING.equals(fieldValue))) {
+				return Collections.unmodifiableList(errors);
+			}
+			else if((!jsonFieldKeyValidator.allowNull() && fieldValue==null)  
+					|| (!jsonFieldKeyValidator.allowEmpty() && (fieldValue==null || EMPTY_STRING.equals(fieldValue)))){
 				isPatternValid = false;
 			}
+			else {
+				isPatternValid = PatternValidator.isValid(jsonFieldKeyValidator.pattern(), fieldValue+"");
+			}
 		}
-		isPatternValid = PatternValidator.isValid(jsonFieldKeyValidator.pattern(), fieldValue+"");
 		if(!isPatternValid) {
-			errors = prepareFieldViolationMessage(currentInstance, jsonValidatorContext,ValidatorType.PATTERN,field,errors,path,"pattern error");	
+			errors = prepareFieldViolationMessage(currentInstance,jsonValidatorContext,ValidatorType.PATTERN,field,errors,path,"pattern error");	
 		}
-		return errors;
+		return Collections.unmodifiableList(errors);
 	}
 	
 	public static boolean isValid(String patternString, String inputString) { 

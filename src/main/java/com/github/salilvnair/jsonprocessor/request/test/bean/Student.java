@@ -6,6 +6,7 @@ import com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidator;
 import com.github.salilvnair.jsonprocessor.request.annotation.ValidValues;
 import com.github.salilvnair.jsonprocessor.request.core.JsonRequest;
 import com.github.salilvnair.jsonprocessor.request.helper.DateParsingUtil.DateFormat;
+import com.github.salilvnair.jsonprocessor.request.helper.DateParsingUtil.DateType;
 import com.github.salilvnair.jsonprocessor.request.type.Mode;
 
 @JsonKeyValidator(id="Student")
@@ -21,6 +22,14 @@ public class Student implements JsonRequest {
 	private String gender;
 	@JsonKeyValidator(required=true)
 	private List<Subject> subjects;
+    	@JsonKeyValidator(
+    		required=true, 
+    		date=true, 
+    		dateFormat=DateFormat.SLASH_MM_DD_YYYY,
+    		dateGte=DateType.Value.TODAY,
+    		message="Date of Admission should be greater than or equals to current date!"
+    	)
+    	private String dateOfAdmission;
 	
 	public String getName() {
 		return name;
@@ -51,6 +60,12 @@ public class Student implements JsonRequest {
 	}
 	public void setDateOfBirth(String dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
+	}
+	public String getDateOfAdmission() {
+		return dateOfAdmission;
+	}
+	public void setDateOfAdmission(String dateOfAdmission) {
+		this.dateOfAdmission = dateOfAdmission;
 	}
 	
 }
