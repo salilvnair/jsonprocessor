@@ -53,7 +53,8 @@ public class TestMain {
 		JsonValidatorContext jsonValidatorContext = JsonValidatorContext
 														.builder()
 														.mode(Mode.SYNC)
-														.userValidatorMap(validatorMap).build();
+														.userValidatorMap(validatorMap)
+														.build();
 
 		List<ValidationMessage>  validationMsgList  = JsonValidator.validate(school, jsonValidatorContext);
 		System.out.println(validationMsgList);
