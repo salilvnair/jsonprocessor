@@ -51,10 +51,10 @@ public class TestMain {
 
 		//Example of calling JsonValidator passing the Object
 		JsonValidatorContext jsonValidatorContext = JsonValidatorContext
-														.builder()
-														.mode(Mode.SYNC)
-														.userValidatorMap(validatorMap)
-														.build();
+									.builder()
+									.mode(Mode.SYNC)
+									.userValidatorMap(validatorMap)
+									.build();
 
 		List<ValidationMessage>  validationMsgList  = JsonValidator.validate(school, jsonValidatorContext);
 		System.out.println(validationMsgList);
