@@ -4,11 +4,10 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidator;
 import com.github.salilvnair.jsonprocessor.request.annotation.ValidValues;
 import com.github.salilvnair.jsonprocessor.request.core.JsonRequest;
 import com.github.salilvnair.jsonprocessor.request.type.JsonElementType;
-import com.github.salilvnair.jsonprocessor.request.validator.core.JsonRequestValidator;
+import com.github.salilvnair.jsonprocessor.request.validator.core.JsonKeyValidator;
 import com.github.salilvnair.jsonprocessor.request.validator.main.AlphaNumericValidator;
 import com.github.salilvnair.jsonprocessor.request.validator.main.ConditionalValidator;
 import com.github.salilvnair.jsonprocessor.request.validator.main.CustomMethodValidator;
@@ -28,8 +27,8 @@ import com.github.salilvnair.jsonprocessor.request.validator.main.ValidValueVali
 public class JsonValidatorFactory {
 	public static final String EMPTY_STRING = "";
 
-	public static List<JsonRequestValidator> generate(Object classInstance, JsonElementType jsonElementType) {
-		List<JsonRequestValidator> validators = new ArrayList<>();
+	public static List<JsonKeyValidator> generate(Object classInstance, JsonElementType jsonElementType) {
+		List<JsonKeyValidator> validators = new ArrayList<>();
 		if(JsonElementType.OBJECT.equals(jsonElementType)) {
 			validators = generateJsonObjectValidators(classInstance);
 		}
@@ -45,16 +44,16 @@ public class JsonValidatorFactory {
 		return validators;
 	}
 
-	private static List<JsonRequestValidator> generateJsonListValidators(Object classInstance) {
-		List<JsonRequestValidator> validators = new ArrayList<>();
+	private static List<JsonKeyValidator> generateJsonListValidators(Object classInstance) {
+		List<JsonKeyValidator> validators = new ArrayList<>();
 		List<?> nodeList = (List<?>) classInstance;
 		validators.add(new ListValidator(nodeList));
 		return validators;
 	}
 
-	private static List<JsonRequestValidator> generateJsonListFieldValidators(Field property) {
-		List<JsonRequestValidator> validators = new ArrayList<>();
-		JsonKeyValidator jsonKeyValidator = property.getAnnotation(JsonKeyValidator.class);
+	private static List<JsonKeyValidator> generateJsonListFieldValidators(Field property) {
+		List<JsonKeyValidator> validators = new ArrayList<>();
+		com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidator jsonKeyValidator = property.getAnnotation(com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidator.class);
 		if(jsonKeyValidator.minItems()!=0) {
 			validators.add(new MinItemsValidator(property));
 		}
@@ -64,9 +63,9 @@ public class JsonValidatorFactory {
 		return validators;
 	}
 
-	private static List<JsonRequestValidator> generateJsonFieldValidators(Field property) {
-		List<JsonRequestValidator> validators = new ArrayList<>();
-		JsonKeyValidator jsonKeyValidator = property.getAnnotation(JsonKeyValidator.class);
+	private static List<JsonKeyValidator> generateJsonFieldValidators(Field property) {
+		List<JsonKeyValidator> validators = new ArrayList<>();
+		com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidator jsonKeyValidator = property.getAnnotation(com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidator.class);
 		if(jsonKeyValidator.required()) {
 			validators.add(new RequiredValidator(property));
 		}
@@ -117,8 +116,8 @@ public class JsonValidatorFactory {
 		return validators;
 	}
 
-	private static List<JsonRequestValidator> generateJsonObjectValidators(Object classInstance) {
-		List<JsonRequestValidator> validators = new ArrayList<>();
+	private static List<JsonKeyValidator> generateJsonObjectValidators(Object classInstance) {
+		List<JsonKeyValidator> validators = new ArrayList<>();
 		validators.add(new ObjectValidator(classInstance));
 		return validators;
 	}

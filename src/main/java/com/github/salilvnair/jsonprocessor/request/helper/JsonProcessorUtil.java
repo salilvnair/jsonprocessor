@@ -8,12 +8,12 @@ import com.github.salilvnair.jsonprocessor.request.context.ValidationMessage;
 import com.github.salilvnair.jsonprocessor.request.core.JsonRequest;
 import com.github.salilvnair.jsonprocessor.request.factory.JsonValidatorFactory;
 import com.github.salilvnair.jsonprocessor.request.type.JsonElementType;
-import com.github.salilvnair.jsonprocessor.request.validator.core.JsonRequestValidator;
+import com.github.salilvnair.jsonprocessor.request.validator.core.JsonKeyValidator;
 
 
 public class JsonProcessorUtil {
 	
-	private List<JsonRequestValidator> jsonRequestValidators;
+	private List<JsonKeyValidator> jsonKeyValidators;
 	
 	private JsonValidatorContext jsonValidatorContext;
 	
@@ -39,20 +39,20 @@ public class JsonProcessorUtil {
 		return this.validate(request, ROOT_PATH,jsonValidatorContext);
 	}
 	
-	public List<ValidationMessage> validate(Object requestInstance, String path,JsonValidatorContext jsonValidatorContext) {
+	public List<ValidationMessage> validate(Object requestInstance, String path, JsonValidatorContext jsonValidatorContext) {
 		List<ValidationMessage> errors = new ArrayList<ValidationMessage>();
-        for (JsonRequestValidator v : getJsonRequestValidators()) {
+        for (JsonKeyValidator v : getJsonRequestValidators()) {
             errors.addAll(v.validate(requestInstance, path,jsonValidatorContext));
         }
         return errors;
 	}
 	
-	public List<JsonRequestValidator> getJsonRequestValidators() {
-		return jsonRequestValidators;
+	public List<JsonKeyValidator> getJsonRequestValidators() {
+		return jsonKeyValidators;
 	}
 
-	public void setJsonRequestValidators(List<JsonRequestValidator> jsonRequestValidators) {
-		this.jsonRequestValidators = jsonRequestValidators;
+	public void setJsonRequestValidators(List<JsonKeyValidator> jsonKeyValidators) {
+		this.jsonKeyValidators = jsonKeyValidators;
 	}	
 	
 	private void init(Object object,JsonElementType jsonElementType) {		

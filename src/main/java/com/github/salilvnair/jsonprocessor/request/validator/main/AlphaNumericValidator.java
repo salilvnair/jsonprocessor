@@ -5,17 +5,16 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidator;
 import com.github.salilvnair.jsonprocessor.request.context.JsonValidatorContext;
 import com.github.salilvnair.jsonprocessor.request.context.ValidationMessage;
 import com.github.salilvnair.jsonprocessor.request.helper.ReflectionUtil;
 import com.github.salilvnair.jsonprocessor.request.type.ValidatorType;
 import com.github.salilvnair.jsonprocessor.request.validator.core.BaseJsonRequestValidator;
-import com.github.salilvnair.jsonprocessor.request.validator.core.JsonRequestValidator;
+import com.github.salilvnair.jsonprocessor.request.validator.core.JsonKeyValidator;
 
 
 
-public class AlphaNumericValidator extends BaseJsonRequestValidator implements JsonRequestValidator {
+public class AlphaNumericValidator extends BaseJsonRequestValidator implements JsonKeyValidator {
 
 	private Field field;
 	
@@ -28,7 +27,7 @@ public class AlphaNumericValidator extends BaseJsonRequestValidator implements J
 			JsonValidatorContext jsonValidatorContext) {
 		List<ValidationMessage> errors = new ArrayList<ValidationMessage>();
 		Object columnValue = ReflectionUtil.getFieldValue(currentInstance, field.getName());
-		JsonKeyValidator jsonFieldKeyValidator = field.getAnnotation(JsonKeyValidator.class);
+		com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidator jsonFieldKeyValidator = field.getAnnotation(com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidator.class);
 		
 		boolean isFieldAlphaNumeric = false;
 		if(jsonFieldKeyValidator.alphaNumeric()){

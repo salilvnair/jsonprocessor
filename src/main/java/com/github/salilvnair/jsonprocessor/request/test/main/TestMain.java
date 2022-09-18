@@ -5,8 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.github.salilvnair.jsonprocessor.request.context.JsonValidatorContext;
 import com.github.salilvnair.jsonprocessor.request.context.ValidationMessage;
-import com.github.salilvnair.jsonprocessor.request.helper.JsonProcessorBuilder;
+import com.github.salilvnair.jsonprocessor.request.helper.JsonValidatorUtil;
+import com.github.salilvnair.jsonprocessor.request.service.JsonValidator;
 import com.github.salilvnair.jsonprocessor.request.test.bean.HeadMaster;
 import com.github.salilvnair.jsonprocessor.request.test.bean.School;
 import com.github.salilvnair.jsonprocessor.request.test.bean.Student;
@@ -39,17 +41,26 @@ public class TestMain {
 		school.setStudents(students);
 		school.setHeadMaster(headMaster);
 		school.setName("Bostan 5");
-		List<School> listRequest = new ArrayList<>();
-		listRequest.add(school);
+
+		List<School> schools = new ArrayList<>();
+		schools.add(school);
+
+
 		Map<String,Object> validatorMap  = new HashMap<>();
 		validatorMap.put("alumini", "Hogward");
-		JsonProcessorBuilder jsonProcessorBuilder = new JsonProcessorBuilder();
-		List<ValidationMessage>  validationMsgList  = jsonProcessorBuilder														
-														.request(school)
+
+		//Example of calling JsonValidator passing the Object
+		JsonValidatorContext jsonValidatorContext = JsonValidatorContext
+														.builder()
 														.mode(Mode.SYNC)
-														.setUserValidatorMap(validatorMap)
-														.validate();
+														.userValidatorMap(validatorMap).build();
+
+		List<ValidationMessage>  validationMsgList  = JsonValidator.validate(school, jsonValidatorContext);
 		System.out.println(validationMsgList);
+
+		//Example of calling JsonValidator passing List
+		List<ValidationMessage>  validationMsgList1  = JsonValidator.validate(schools, jsonValidatorContext);
+		System.out.println(validationMsgList1);
 	}
 	
 	

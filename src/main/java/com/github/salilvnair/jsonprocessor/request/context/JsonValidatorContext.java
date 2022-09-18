@@ -7,6 +7,7 @@ import java.util.Map;
 
 import com.github.salilvnair.jsonprocessor.request.core.JsonRequest;
 import com.github.salilvnair.jsonprocessor.request.type.Mode;
+import lombok.Builder;
 
 public class JsonValidatorContext {
 	private String id;
@@ -21,6 +22,14 @@ public class JsonValidatorContext {
 	private Field parent;
 	private Mode mode = Mode.STRICT;
 	private Map<String, List<PathInfoContext>> fieldPathInfo;
+
+	@Builder
+	public JsonValidatorContext(Map<String, Object> userValidatorMap, Map<String, List<String>> validValuesDataSet, Map<String, String> userDefinedMessageDataSet, Mode mode) {
+		this.userValidatorMap = userValidatorMap;
+		this.validValuesDataSet = validValuesDataSet;
+		this.userDefinedMessageDataSet = userDefinedMessageDataSet;
+		this.mode = mode;
+	}
 
 	public String getPath() {
 		return path;
@@ -126,6 +135,6 @@ public class JsonValidatorContext {
 
 	public void setMode(Mode validationMode) {
 		this.mode = validationMode;
-	}	
+	}
 
 }

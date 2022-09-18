@@ -1,67 +1,76 @@
 package com.github.salilvnair.jsonprocessor.request.helper;
 
-import java.lang.reflect.Method;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 import com.github.salilvnair.jsonprocessor.request.context.JsonValidatorContext;
-import com.github.salilvnair.jsonprocessor.request.task.ICustomJsonValidatorTask;
+import com.github.salilvnair.jsonprocessor.request.context.ValidationMessage;
+import com.github.salilvnair.jsonprocessor.request.core.JsonRequest;
+import com.github.salilvnair.jsonprocessor.request.type.Mode;
+
 
 public class JsonValidatorUtil {
-	protected final Log logger = LogFactory.getLog(getClass());
-	
-	private String methodName;
-	
-	private ICustomJsonValidatorTask taskClass;
-	
-	public  void setTask(ICustomJsonValidatorTask taskClass) {
-		this.taskClass = taskClass;
-	}
-	
-	public Object invoke(Object...parameters) {
-		if(parameters==null) {
-			return null;
+//	private JsonValidatorContext jsonValidatorContext;
+//	private JsonRequest jsonRequest;
+//	private List<?> jsonRequestList;
+//
+//	public JsonValidatorUtil setUserValidatorMap(Map<String,Object> userValidatorMap) {
+//		if(this.jsonValidatorContext==null) {
+//			this.jsonValidatorContext = new JsonValidatorContext();
+//		}
+//		jsonValidatorContext.setUserValidatorMap(userValidatorMap);
+//		return this;
+//	}
+//
+//	public JsonValidatorUtil setValidValuesDataSet(Map<String,List<String>> validValuesDataSet) {
+//		if(this.jsonValidatorContext==null) {
+//			this.jsonValidatorContext = new JsonValidatorContext();
+//		}
+//		jsonValidatorContext.setValidValuesDataSet(validValuesDataSet);
+//		return this;
+//	}
+//
+//	public JsonValidatorUtil setUserDefinedMessageDataSet(Map<String,String> userDefinedMessageDataSet) {
+//		if(this.jsonValidatorContext==null) {
+//			this.jsonValidatorContext = new JsonValidatorContext();
+//		}
+//		jsonValidatorContext.setUserDefinedMessageDataSet(userDefinedMessageDataSet);
+//		return this;
+//	}
+//
+//	public JsonValidatorUtil request(JsonRequest jsonRequest) {
+//		this.jsonRequest = jsonRequest;
+//		return this;
+//	}
+//
+//	public JsonValidatorUtil mode(Mode validationMode) {
+//		if(this.jsonValidatorContext==null) {
+//			this.jsonValidatorContext = new JsonValidatorContext();
+//		}
+//		jsonValidatorContext.setMode(validationMode);
+//		return this;
+//	}
+//
+//	public JsonValidatorUtil request(List<?> jsonRequestList) {
+//		this.jsonRequestList = jsonRequestList;
+//		return this;
+//	}
+//
+//
+	public static List<ValidationMessage> validate(JsonValidatorContext validatorContext) {
+		JsonRequest jsonRequest = validatorContext.getRootRequest();
+		List<?> jsonRequestList = validatorContext.getRootList();
+		if(jsonRequest==null && (jsonRequestList==null||jsonRequestList.isEmpty())) {
+			return Collections.emptyList();
 		}
-		
-		Class<?>[] paramString = {};
-		if (parameters.length != 0) {
-			paramString = new Class[parameters.length];
-			for (int i = 0; i < parameters.length; i++) {
-				if (parameters[i] != null) {
-
-					paramString[i] = parameters[i].getClass();
-				}
-			}
+		JsonProcessorUtil jsonProcessorUtil = new JsonProcessorUtil(validatorContext);
+		if(jsonRequestList==null || jsonRequestList.isEmpty()) {
+			return jsonProcessorUtil.validate(jsonRequest);
 		}
-		
-		Method method = null;
-		try {			
-			method = taskClass.getClass().getDeclaredMethod(taskClass.getMethodName(), paramString);
-
-			return method.invoke(taskClass, parameters);
-		} 
-		
-		catch (Exception ex) {
-			logger.error("Exception from ExcelValidatorUtil.invoke>>",ex);			
+		else {
+			return jsonProcessorUtil.validate(jsonRequestList);
 		}
-		return null;
-	}
-
-	public Object executeTask(ICustomJsonValidatorTask taskClass,JsonValidatorContext validatorContext) {
-		this.taskClass = taskClass;
-		Object obj = invoke(validatorContext);
-		return obj;
-	}
-
-	public String getMethodName() {
-		return methodName;
-	}
-
-
-	public void setMethodName(String methodName) {
-		this.methodName = methodName;
 	}
 	
-
 }

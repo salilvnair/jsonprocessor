@@ -1,4 +1,4 @@
-## JSON PROCESSOR
+## JSON VALIDATOR
 
 > Easy annotation based validator.
 
@@ -22,8 +22,8 @@
 ```java
 <dependency>
     <groupId>com.github.salilvnair</groupId>
-    <artifactId>jsonprocessor</artifactId>
-    <version>1.0.5</version>
+    <artifactId>json-validator</artifactId>
+    <version>1.0.0</version>
 </dependency>
 ```
 
@@ -52,22 +52,28 @@ private String name;
 private String email;
 ```
 
-> 4. Call the processor using `JsonProcessorBuilder`
+> 4. Call the validator by passing the JsonValidatorContext using `JsonValidator`
 
 ```java
-List<ValidationMessage>  validationMsgList  = new JsonProcessorBuilder()
-                                                     .request(school)
-                                                     .validate();
+
+JsonValidatorContext jsonValidatorContext = JsonValidatorContext
+                                                .builder()
+                                                .build();
+
+List<ValidationMessage>  validationMsgList  = JsonValidator.validate(school, jsonValidatorContext);
 ```
 > 5. User defined map can be passed in the `JsonProcessorBuilder` which can be later used in customTask(s) or in Conditional validators.
 		
 ```java
+
 Map<String,Object> validatorMap  = new HashMap<>();
 validatorMap.put("alumini", "Hogward");
-List<ValidationMessage>  validationMsgList  = new JsonProcessorBuilder()
-                                                     .request(school)
-                                                     .setUserValidatorMap(validatorMap)
-                                                     .validate();
+
+JsonValidatorContext jsonValidatorContext = JsonValidatorContext
+                                                .builder()
+                                                .userValidatorMap(validatorMap).build();
+
+List<ValidationMessage>  validationMsgList  = JsonValidator.validate(school, jsonValidatorContext);
 ```
 ## Complete Usage:
 ```java

@@ -5,15 +5,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidator;
 import com.github.salilvnair.jsonprocessor.request.context.JsonValidatorContext;
 import com.github.salilvnair.jsonprocessor.request.context.ValidationMessage;
 import com.github.salilvnair.jsonprocessor.request.helper.ReflectionUtil;
 import com.github.salilvnair.jsonprocessor.request.type.ValidatorType;
 import com.github.salilvnair.jsonprocessor.request.validator.core.BaseJsonRequestValidator;
-import com.github.salilvnair.jsonprocessor.request.validator.core.JsonRequestValidator;
+import com.github.salilvnair.jsonprocessor.request.validator.core.JsonKeyValidator;
 
-public class MaxItemsValidator extends BaseJsonRequestValidator implements JsonRequestValidator {
+public class MaxItemsValidator extends BaseJsonRequestValidator implements JsonKeyValidator {
 	
 	private Field field;
 	
@@ -26,7 +25,7 @@ public class MaxItemsValidator extends BaseJsonRequestValidator implements JsonR
 			JsonValidatorContext jsonValidatorContext) {
 		List<ValidationMessage> errors = new ArrayList<ValidationMessage>();
 		Object listObject = ReflectionUtil.getFieldValue(currentInstance, field);
-		JsonKeyValidator jsonFieldKeyValidator = field.getAnnotation(JsonKeyValidator.class);
+		com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidator jsonFieldKeyValidator = field.getAnnotation(com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidator.class);
 		List<?> objectList = (List<?>) listObject;
 		if(jsonFieldKeyValidator.maxItems()!=-1) {
 			if(objectList!=null && objectList.size()>jsonFieldKeyValidator.maxItems()) {				

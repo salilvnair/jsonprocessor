@@ -11,19 +11,18 @@ import java.util.stream.IntStream;
 import org.apache.commons.collections4.CollectionUtils;
 
 import com.github.salilvnair.jsonprocessor.request.annotation.ConditionalValidValues;
-import com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidator;
 import com.github.salilvnair.jsonprocessor.request.annotation.ValidValues;
 import com.github.salilvnair.jsonprocessor.request.context.JsonValidatorContext;
 import com.github.salilvnair.jsonprocessor.request.context.ValidationMessage;
 import com.github.salilvnair.jsonprocessor.request.core.JsonRequest;
-import com.github.salilvnair.jsonprocessor.request.helper.JsonValidatorUtil;
+import com.github.salilvnair.jsonprocessor.request.helper.JsonValidatorTaskUtil;
 import com.github.salilvnair.jsonprocessor.request.helper.ReflectionUtil;
 import com.github.salilvnair.jsonprocessor.request.task.AbstractCustomJsonValidatorTask;
 import com.github.salilvnair.jsonprocessor.request.type.ValidatorType;
 import com.github.salilvnair.jsonprocessor.request.validator.core.BaseJsonRequestValidator;
-import com.github.salilvnair.jsonprocessor.request.validator.core.JsonRequestValidator;
+import com.github.salilvnair.jsonprocessor.request.validator.core.JsonKeyValidator;
 
-public class ValidValueValidator extends BaseJsonRequestValidator implements JsonRequestValidator {
+public class ValidValueValidator extends BaseJsonRequestValidator implements JsonKeyValidator {
 	
 	public static final String VALID_VALUE_VIOLATION_MESSAGE = "current value does not match with any of the valid values";
 	
@@ -40,7 +39,7 @@ public class ValidValueValidator extends BaseJsonRequestValidator implements Jso
 		StringBuilder errorMsgBuilder = new StringBuilder();
 		Object fieldValue = ReflectionUtil.getFieldValue(currentInstance, field.getName());
 		ValidValues validValues = field.getAnnotation(ValidValues.class);
-		JsonKeyValidator jsonObjectKeyValidator = currentInstance.getClass().getAnnotation(JsonKeyValidator.class);
+		com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidator jsonObjectKeyValidator = currentInstance.getClass().getAnnotation(com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidator.class);
 		boolean validValueViolation = false;
 		
 		String errorMessage = null;
@@ -148,7 +147,7 @@ public class ValidValueValidator extends BaseJsonRequestValidator implements Jso
 	}
 	
 	
-	public boolean satisfiesValidValueCondition(String condition, JsonKeyValidator jsonObjectKeyValidator, JsonValidatorContext jsonValidatorContext, String path, Object currentInstance) {
+	public boolean satisfiesValidValueCondition(String condition, com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidator jsonObjectKeyValidator, JsonValidatorContext jsonValidatorContext, String path, Object currentInstance) {
 		AbstractCustomJsonValidatorTask validatorTask;
 		try {
 			validatorTask = jsonObjectKeyValidator.customTaskValidator().newInstance();
@@ -157,8 +156,8 @@ public class ValidValueValidator extends BaseJsonRequestValidator implements Jso
 				jsonValidatorContext.setField(field);
 				jsonValidatorContext.setJsonRequest((JsonRequest) currentInstance);
 				validatorTask.setMethodName(condition);
-				JsonValidatorUtil jsonValidatorUtil = new JsonValidatorUtil();
-				return (boolean) jsonValidatorUtil.executeTask(validatorTask, jsonValidatorContext);
+				JsonValidatorTaskUtil jsonValidatorTaskUtil = new JsonValidatorTaskUtil();
+				return (boolean) jsonValidatorTaskUtil.executeTask(validatorTask, jsonValidatorContext);
 			}
 		}
 		catch (InstantiationException | IllegalAccessException e) {}

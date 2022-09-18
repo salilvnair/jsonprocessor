@@ -6,7 +6,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidator;
 import com.github.salilvnair.jsonprocessor.request.context.JsonValidatorContext;
 import com.github.salilvnair.jsonprocessor.request.context.ValidationMessage;
 import com.github.salilvnair.jsonprocessor.request.helper.DateParsingUtil;
@@ -16,9 +15,9 @@ import com.github.salilvnair.jsonprocessor.request.helper.DateParsingUtil.DateTy
 import com.github.salilvnair.jsonprocessor.request.helper.ReflectionUtil;
 import com.github.salilvnair.jsonprocessor.request.type.ValidatorType;
 import com.github.salilvnair.jsonprocessor.request.validator.core.BaseJsonRequestValidator;
-import com.github.salilvnair.jsonprocessor.request.validator.core.JsonRequestValidator;
+import com.github.salilvnair.jsonprocessor.request.validator.core.JsonKeyValidator;
 
-public class DateValidator extends BaseJsonRequestValidator implements JsonRequestValidator {
+public class DateValidator extends BaseJsonRequestValidator implements JsonKeyValidator {
 
 	private Field field;
 	
@@ -106,7 +105,7 @@ public class DateValidator extends BaseJsonRequestValidator implements JsonReque
 			JsonValidatorContext jsonValidatorContext) {
 		List<ValidationMessage> errors = new ArrayList<ValidationMessage>();
 		Object columnValue = ReflectionUtil.getFieldValue(currentInstance, field.getName());
-		JsonKeyValidator jsonFieldKeyValidator = field.getAnnotation(JsonKeyValidator.class);
+		com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidator jsonFieldKeyValidator = field.getAnnotation(com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidator.class);
 		boolean isFieldTypeDate = false;
 		if(jsonFieldKeyValidator.date()||jsonFieldKeyValidator.dateString()||jsonFieldKeyValidator.dateTimeString()) {
 			isFieldTypeDate = true;
@@ -180,7 +179,7 @@ public class DateValidator extends BaseJsonRequestValidator implements JsonReque
 		return Collections.unmodifiableList(errors);
 	}
 
-	private String validateDateStringUsingMetadata(Date dateColumnValue, JsonKeyValidator jsonFieldKeyValidator,
+	private String validateDateStringUsingMetadata(Date dateColumnValue, com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidator jsonFieldKeyValidator,
 			JsonValidatorContext jsonValidatorContext) {
 		String errorMessage = null;
 		boolean invalidDate = false;
@@ -248,7 +247,7 @@ public class DateValidator extends BaseJsonRequestValidator implements JsonReque
 	}
 
 	private void convertIntoDesiredDateType(Object columnValue, Object currentInstance,
-			JsonKeyValidator jsonFieldKeyValidator) {
+			com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidator jsonFieldKeyValidator) {
 		if(columnValue instanceof String) {
 			String jsonDateValue = (String) columnValue;
 			 if(jsonFieldKeyValidator.convertIntoDateTimeString()){				 

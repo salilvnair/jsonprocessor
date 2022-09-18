@@ -11,9 +11,9 @@ import com.github.salilvnair.jsonprocessor.request.helper.JsonProcessorUtil;
 import com.github.salilvnair.jsonprocessor.request.helper.ReflectionUtil;
 import com.github.salilvnair.jsonprocessor.request.type.JsonElementType;
 import com.github.salilvnair.jsonprocessor.request.validator.core.BaseJsonRequestValidator;
-import com.github.salilvnair.jsonprocessor.request.validator.core.JsonRequestValidator;
+import com.github.salilvnair.jsonprocessor.request.validator.core.JsonKeyValidator;
 
-public class ObjectFieldValidator extends BaseJsonRequestValidator implements JsonRequestValidator {
+public class ObjectFieldValidator extends BaseJsonRequestValidator implements JsonKeyValidator {
 	
 	private Field field;
 	private JsonProcessorUtil jsonProcessorUtil;
