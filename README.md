@@ -62,7 +62,7 @@ JsonValidatorContext jsonValidatorContext = JsonValidatorContext
 
 List<ValidationMessage>  validationMsgList  = JsonValidator.validate(school, jsonValidatorContext);
 ```
-> 5. User defined map can be passed in the `JsonProcessorBuilder` which can be later used in customTask(s) or in Conditional validators.
+> 5. User defined map can be passed in the builder which can be later used in customTask(s) or in Conditional validators.
 		
 ```java
 
