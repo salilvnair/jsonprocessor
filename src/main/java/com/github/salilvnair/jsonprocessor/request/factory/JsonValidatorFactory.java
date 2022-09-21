@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidation;
 import com.github.salilvnair.jsonprocessor.request.annotation.ValidValues;
 import com.github.salilvnair.jsonprocessor.request.core.JsonRequest;
 import com.github.salilvnair.jsonprocessor.request.type.JsonElementType;
@@ -53,11 +54,11 @@ public class JsonValidatorFactory {
 
 	private static List<JsonKeyValidator> generateJsonListFieldValidators(Field property) {
 		List<JsonKeyValidator> validators = new ArrayList<>();
-		com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidator jsonKeyValidator = property.getAnnotation(com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidator.class);
-		if(jsonKeyValidator.minItems()!=0) {
+		JsonKeyValidation jsonKeyValidation = property.getAnnotation(JsonKeyValidation.class);
+		if(jsonKeyValidation.minItems()!=0) {
 			validators.add(new MinItemsValidator(property));
 		}
-		if(jsonKeyValidator.maxItems()!=-1) {
+		if(jsonKeyValidation.maxItems()!=-1) {
 			validators.add(new MaxItemsValidator(property));
 		}
 		return validators;
@@ -65,11 +66,11 @@ public class JsonValidatorFactory {
 
 	private static List<JsonKeyValidator> generateJsonFieldValidators(Field property) {
 		List<JsonKeyValidator> validators = new ArrayList<>();
-		com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidator jsonKeyValidator = property.getAnnotation(com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidator.class);
-		if(jsonKeyValidator.required()) {
+		JsonKeyValidation jsonKeyValidation = property.getAnnotation(JsonKeyValidation.class);
+		if(jsonKeyValidation.required()) {
 			validators.add(new RequiredValidator(property));
 		}
-		if(!EMPTY_STRING.equals(jsonKeyValidator.condition()) && jsonKeyValidator.conditional()) {
+		if(!EMPTY_STRING.equals(jsonKeyValidation.condition()) && jsonKeyValidation.conditional()) {
 			validators.add(new ConditionalValidator(property));
 		}
 		if(property.isAnnotationPresent(ValidValues.class)) {
@@ -89,28 +90,28 @@ public class JsonValidatorFactory {
 		if(JsonRequest.class.isAssignableFrom(property.getType())) {
 			validators.add(new ObjectFieldValidator(property));
 		}
-		if(jsonKeyValidator.numeric()) {
+		if(jsonKeyValidation.numeric()) {
 			validators.add(new NumericValidator(property));
 		}
-		if(jsonKeyValidator.alphaNumeric()) {
+		if(jsonKeyValidation.alphaNumeric()) {
 			validators.add(new AlphaNumericValidator(property));
 		}
-		if(jsonKeyValidator.email()) {
+		if(jsonKeyValidation.email()) {
 			validators.add(new EmailValidator(property));
 		}
-		if(!EMPTY_STRING.equals(jsonKeyValidator.pattern())) {
+		if(!EMPTY_STRING.equals(jsonKeyValidation.pattern())) {
 			validators.add(new PatternValidator(property));
 		}
-		if(jsonKeyValidator.date()||jsonKeyValidator.dateString()||jsonKeyValidator.dateTimeString()) {
+		if(jsonKeyValidation.date()|| jsonKeyValidation.dateString()|| jsonKeyValidation.dateTimeString()) {
 			validators.add(new DateValidator(property));
 		}
-		if(!EMPTY_STRING.equals(jsonKeyValidator.customTask())) {
+		if(!EMPTY_STRING.equals(jsonKeyValidation.customTask())) {
 			validators.add(new CustomMethodValidator(property));
 		}
-		if(EMPTY_STRING.equals(jsonKeyValidator.customTask()) && jsonKeyValidator.customTasks().length > 0) {
+		if(EMPTY_STRING.equals(jsonKeyValidation.customTask()) && jsonKeyValidation.customTasks().length > 0) {
 			validators.add(new CustomMethodValidator(property));
 		}
-		if(jsonKeyValidator.minLength()!=-1 || jsonKeyValidator.maxLength()!=-1 || jsonKeyValidator.length()!=-1) {
+		if(jsonKeyValidation.minLength()!=-1 || jsonKeyValidation.maxLength()!=-1 || jsonKeyValidation.length()!=-1) {
 			validators.add(new LengthValidator(property));
 		}
 		return validators;

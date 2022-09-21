@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidation;
 import org.apache.commons.collections4.CollectionUtils;
 
 import com.github.salilvnair.jsonprocessor.request.annotation.ConditionalValidValues;
@@ -39,7 +40,7 @@ public class ValidValueValidator extends BaseJsonRequestValidator implements Jso
 		StringBuilder errorMsgBuilder = new StringBuilder();
 		Object fieldValue = ReflectionUtil.getFieldValue(currentInstance, field.getName());
 		ValidValues validValues = field.getAnnotation(ValidValues.class);
-		com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidator jsonObjectKeyValidator = currentInstance.getClass().getAnnotation(com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidator.class);
+		JsonKeyValidation jsonObjectKeyValidator = currentInstance.getClass().getAnnotation(JsonKeyValidation.class);
 		boolean validValueViolation = false;
 		
 		String errorMessage = null;
@@ -147,7 +148,7 @@ public class ValidValueValidator extends BaseJsonRequestValidator implements Jso
 	}
 	
 	
-	public boolean satisfiesValidValueCondition(String condition, com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidator jsonObjectKeyValidator, JsonValidatorContext jsonValidatorContext, String path, Object currentInstance) {
+	public boolean satisfiesValidValueCondition(String condition, JsonKeyValidation jsonObjectKeyValidator, JsonValidatorContext jsonValidatorContext, String path, Object currentInstance) {
 		AbstractCustomJsonValidatorTask validatorTask;
 		try {
 			validatorTask = jsonObjectKeyValidator.customTaskValidator().newInstance();

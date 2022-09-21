@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidation;
 import com.github.salilvnair.jsonprocessor.request.context.JsonValidatorContext;
 import com.github.salilvnair.jsonprocessor.request.context.ValidationMessage;
 import com.github.salilvnair.jsonprocessor.request.helper.ReflectionUtil;
@@ -28,7 +29,7 @@ public class PatternValidator extends BaseJsonRequestValidator implements JsonKe
 		List<ValidationMessage> errors = new ArrayList<ValidationMessage>();
 		Object fieldValue = ReflectionUtil.getFieldValue(currentInstance, field.getName());
 		boolean fieldHasPattern = false;
-		com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidator jsonFieldKeyValidator = field.getAnnotation(com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidator.class);
+		JsonKeyValidation jsonFieldKeyValidator = field.getAnnotation(JsonKeyValidation.class);
 		if(!EMPTY_STRING.equals(jsonFieldKeyValidator.pattern())) {
 			fieldHasPattern = true;
 		}

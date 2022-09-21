@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidation;
 import com.github.salilvnair.jsonprocessor.request.constant.JsonKeyValidatorConstant;
 import com.github.salilvnair.jsonprocessor.request.context.JsonValidatorContext;
 import com.github.salilvnair.jsonprocessor.request.context.ValidationMessage;
@@ -26,9 +27,9 @@ public class CustomMethodValidator extends BaseJsonRequestValidator implements J
 	public List<ValidationMessage> validate(Object currentInstance, String path,
 			JsonValidatorContext jsonValidatorContext) {
 		List<ValidationMessage> errors = new ArrayList<ValidationMessage>();
-		if(currentInstance.getClass().isAnnotationPresent(com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidator.class)) {
-			com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidator jsonObjectKeyValidator = currentInstance.getClass().getAnnotation(com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidator.class);
-			com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidator jsonFieldKeyValidator = field.getAnnotation(com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidator.class);
+		if(currentInstance.getClass().isAnnotationPresent(JsonKeyValidation.class)) {
+			JsonKeyValidation jsonObjectKeyValidator = currentInstance.getClass().getAnnotation(JsonKeyValidation.class);
+			JsonKeyValidation jsonFieldKeyValidator = field.getAnnotation(JsonKeyValidation.class);
 			AbstractCustomJsonValidatorTask validatorTask;
 			try {
 				validatorTask = jsonObjectKeyValidator.customTaskValidator().newInstance();
@@ -85,7 +86,7 @@ public class CustomMethodValidator extends BaseJsonRequestValidator implements J
 		return Collections.unmodifiableList(errors);
 	}
 	
-	public static String invokeCustomTask(JsonValidatorContext jsonValidatorContext, String methodName, com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidator jsonFieldKeyValidator, AbstractCustomJsonValidatorTask validatorTask) {
+	public static String invokeCustomTask(JsonValidatorContext jsonValidatorContext, String methodName, JsonKeyValidation jsonFieldKeyValidator, AbstractCustomJsonValidatorTask validatorTask) {
 		String errorMessage = null;
 		validatorTask.setMethodName(methodName);
 		JsonValidatorTaskUtil jsonValidatorTaskUtil = new JsonValidatorTaskUtil();

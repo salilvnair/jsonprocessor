@@ -3,7 +3,7 @@ package com.github.salilvnair.jsonprocessor.request.test.bean;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidator;
+import com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidation;
 import com.github.salilvnair.jsonprocessor.request.annotation.UserDefinedMessage;
 import com.github.salilvnair.jsonprocessor.request.constant.JsonKeyValidatorConstant;
 import com.github.salilvnair.jsonprocessor.request.core.JsonRequest;
@@ -12,15 +12,15 @@ import com.github.salilvnair.jsonprocessor.request.test.task.SchoolCustomTask;
 import com.github.salilvnair.jsonprocessor.request.type.MessageType;
 import com.github.salilvnair.jsonprocessor.request.type.Mode;
 import com.github.salilvnair.jsonprocessor.request.type.ValidatorType;
-@JsonKeyValidator(id="School", customTaskValidator=SchoolCustomTask.class)
+@JsonKeyValidation(id="School", customTaskValidator=SchoolCustomTask.class)
 public class School implements JsonRequest {
-	@JsonKeyValidator(required=true)
+	@JsonKeyValidation(required=true)
 	private long id;
-	@JsonKeyValidator(conditional=true,condition="validateAlumini",mode=Mode.SYNC)
+	@JsonKeyValidation(conditional=true,condition="validateAlumini",mode=Mode.SYNC)
 	private String name;
-	@JsonKeyValidator(required=true, mode=Mode.SYNC)
+	@JsonKeyValidation(required=true, mode=Mode.SYNC)
 	private HeadMaster headMaster;
-	@JsonKeyValidator(
+	@JsonKeyValidation(
 		required=true,
 		minItems=4,		
 		userDefinedMessages = {
@@ -37,9 +37,9 @@ public class School implements JsonRequest {
 		}
 	)
 	private ArrayList<Student> students;
-	@JsonKeyValidator(allowEmpty=true,numeric=true,message="numeric value is expected")
+	@JsonKeyValidation(allowEmpty=true,numeric=true,message="numeric value is expected")
 	private String totalStudents;
-	@JsonKeyValidator(dateString=true, dateFormat=DateFormat.SLASH_MM_DD_YYYY,convertIntoDateTimeString=true)
+	@JsonKeyValidation(dateString=true, dateFormat=DateFormat.SLASH_MM_DD_YYYY,convertIntoDateTimeString=true)
 	private String year;
 	public long getId() {
 		return id;

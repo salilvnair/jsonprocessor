@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidation;
 import com.github.salilvnair.jsonprocessor.request.context.JsonValidatorContext;
 import com.github.salilvnair.jsonprocessor.request.context.ValidationMessage;
 import com.github.salilvnair.jsonprocessor.request.helper.ReflectionUtil;
@@ -27,7 +28,7 @@ public class EmailValidator extends BaseJsonRequestValidator implements JsonKeyV
 			JsonValidatorContext jsonValidatorContext) {
 		List<ValidationMessage> errors = new ArrayList<ValidationMessage>();
 		Object fieldValue = ReflectionUtil.getFieldValue(currentInstance, field.getName());
-		com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidator jsonFieldKeyValidator = field.getAnnotation(com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidator.class);
+		JsonKeyValidation jsonFieldKeyValidator = field.getAnnotation(JsonKeyValidation.class);
 		boolean isFieldTypeEmail = jsonFieldKeyValidator.email();
 		boolean invalidEmail = false;
 		if(isFieldTypeEmail) {

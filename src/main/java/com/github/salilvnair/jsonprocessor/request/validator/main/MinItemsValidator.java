@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidation;
 import com.github.salilvnair.jsonprocessor.request.context.JsonValidatorContext;
 import com.github.salilvnair.jsonprocessor.request.context.ValidationMessage;
 import com.github.salilvnair.jsonprocessor.request.helper.ReflectionUtil;
@@ -26,7 +27,7 @@ public class MinItemsValidator extends BaseJsonRequestValidator implements JsonK
 		List<ValidationMessage> errors = new ArrayList<ValidationMessage>();
 		Object listObject = ReflectionUtil.getFieldValue(currentInstance, field);
 		List<?> objectList = (List<?>) listObject;
-		com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidator jsonFieldKeyValidator = field.getAnnotation(com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidator.class);
+		JsonKeyValidation jsonFieldKeyValidator = field.getAnnotation(JsonKeyValidation.class);
 		if(jsonFieldKeyValidator.minItems()!=0) {
 			if(jsonFieldKeyValidator.allowNull() && objectList==null) {
 				return Collections.unmodifiableList(errors);

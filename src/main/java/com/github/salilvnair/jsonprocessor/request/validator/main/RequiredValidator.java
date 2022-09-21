@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidation;
 import com.github.salilvnair.jsonprocessor.request.context.JsonValidatorContext;
 import com.github.salilvnair.jsonprocessor.request.context.ValidationMessage;
 import com.github.salilvnair.jsonprocessor.request.helper.ReflectionUtil;
@@ -26,7 +27,7 @@ public class RequiredValidator extends BaseJsonRequestValidator implements JsonK
 			JsonValidatorContext jsonValidatorContext) {
 		List<ValidationMessage> errors = new ArrayList<ValidationMessage>();
 		Object fieldValue = ReflectionUtil.getFieldValue(currentInstance, field.getName());
-		com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidator jsonFieldKeyValidator = field.getAnnotation(com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidator.class);
+		JsonKeyValidation jsonFieldKeyValidator = field.getAnnotation(JsonKeyValidation.class);
 		boolean requiredFieldViolation = false;
 		if(jsonFieldKeyValidator.allowNull() && fieldValue==null) {
 			return Collections.unmodifiableList(errors);

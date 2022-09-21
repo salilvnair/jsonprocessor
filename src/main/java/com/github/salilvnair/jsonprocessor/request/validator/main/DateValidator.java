@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidation;
 import com.github.salilvnair.jsonprocessor.request.context.JsonValidatorContext;
 import com.github.salilvnair.jsonprocessor.request.context.ValidationMessage;
 import com.github.salilvnair.jsonprocessor.request.helper.DateParsingUtil;
@@ -105,7 +106,7 @@ public class DateValidator extends BaseJsonRequestValidator implements JsonKeyVa
 			JsonValidatorContext jsonValidatorContext) {
 		List<ValidationMessage> errors = new ArrayList<ValidationMessage>();
 		Object columnValue = ReflectionUtil.getFieldValue(currentInstance, field.getName());
-		com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidator jsonFieldKeyValidator = field.getAnnotation(com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidator.class);
+		JsonKeyValidation jsonFieldKeyValidator = field.getAnnotation(JsonKeyValidation.class);
 		boolean isFieldTypeDate = false;
 		if(jsonFieldKeyValidator.date()||jsonFieldKeyValidator.dateString()||jsonFieldKeyValidator.dateTimeString()) {
 			isFieldTypeDate = true;
@@ -179,7 +180,7 @@ public class DateValidator extends BaseJsonRequestValidator implements JsonKeyVa
 		return Collections.unmodifiableList(errors);
 	}
 
-	private String validateDateStringUsingMetadata(Date dateColumnValue, com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidator jsonFieldKeyValidator,
+	private String validateDateStringUsingMetadata(Date dateColumnValue, JsonKeyValidation jsonFieldKeyValidator,
 			JsonValidatorContext jsonValidatorContext) {
 		String errorMessage = null;
 		boolean invalidDate = false;
@@ -247,7 +248,7 @@ public class DateValidator extends BaseJsonRequestValidator implements JsonKeyVa
 	}
 
 	private void convertIntoDesiredDateType(Object columnValue, Object currentInstance,
-			com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidator jsonFieldKeyValidator) {
+			JsonKeyValidation jsonFieldKeyValidator) {
 		if(columnValue instanceof String) {
 			String jsonDateValue = (String) columnValue;
 			 if(jsonFieldKeyValidator.convertIntoDateTimeString()){				 

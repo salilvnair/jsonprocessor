@@ -2,27 +2,27 @@ package com.github.salilvnair.jsonprocessor.request.test.bean;
 
 import java.util.List;
 
-import com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidator;
+import com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidation;
 import com.github.salilvnair.jsonprocessor.request.annotation.ValidValues;
 import com.github.salilvnair.jsonprocessor.request.core.JsonRequest;
 import com.github.salilvnair.jsonprocessor.request.helper.DateParsingUtil.DateFormat;
 import com.github.salilvnair.jsonprocessor.request.helper.DateParsingUtil.DateType;
 import com.github.salilvnair.jsonprocessor.request.type.Mode;
 
-@JsonKeyValidator(id="Student")
+@JsonKeyValidation(id="Student")
 public class Student implements JsonRequest {
-	@JsonKeyValidator(required=true)
+	@JsonKeyValidation(required=true)
 	private String name;
-	@JsonKeyValidator(alphaNumeric=true)
+	@JsonKeyValidation(alphaNumeric=true)
 	@ValidValues({"X","Y"})
 	private String section;
-	@JsonKeyValidator(dateString=true,dateFormat=DateFormat.SLASH_MM_DD_YYYY)
+	@JsonKeyValidation(dateString=true,dateFormat=DateFormat.SLASH_MM_DD_YYYY)
 	private String dateOfBirth;
-	@JsonKeyValidator(required=true, mode=Mode.SYNC)
+	@JsonKeyValidation(required=true, mode=Mode.SYNC)
 	private String gender;
-	@JsonKeyValidator(required=true)
+	@JsonKeyValidation(required=true)
 	private List<Subject> subjects;
-    	@JsonKeyValidator(
+    	@JsonKeyValidation(
     		required=true, 
     		date=true, 
     		dateFormat=DateFormat.SLASH_MM_DD_YYYY,

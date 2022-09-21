@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidation;
 import com.github.salilvnair.jsonprocessor.request.context.JsonValidatorContext;
 import com.github.salilvnair.jsonprocessor.request.context.ValidationMessage;
 import com.github.salilvnair.jsonprocessor.request.helper.AnnotationUtil;
@@ -22,7 +23,7 @@ public class ObjectValidator extends BaseJsonRequestValidator implements JsonKey
 	private JsonProcessorUtil jsonProcessorUtil;
 	
 	public ObjectValidator(Object classInstance) {
-		properties = AnnotationUtil.getAnnotatedFields(classInstance.getClass(), com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidator.class);
+		properties = AnnotationUtil.getAnnotatedFields(classInstance.getClass(), JsonKeyValidation.class);
 	}
 
 	@Override
@@ -31,17 +32,17 @@ public class ObjectValidator extends BaseJsonRequestValidator implements JsonKey
 		List<ValidationMessage> errors = new ArrayList<ValidationMessage>();
 		for (Field property : properties) {
 			Field parent = jsonValidatorContext.getParent();
-			com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidator fieldLevelJsonKeyValidator = property.getAnnotation(com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidator.class);
+			JsonKeyValidation fieldLevelJsonKeyValidation = property.getAnnotation(JsonKeyValidation.class);
 			if(!Mode.STRICT.equals(jsonValidatorContext.getMode()) &&
-				!Mode.STRICT.equals(fieldLevelJsonKeyValidator.mode()) && 
-				!fieldLevelJsonKeyValidator.mode().equals(jsonValidatorContext.getMode())) {
+				!Mode.STRICT.equals(fieldLevelJsonKeyValidation.mode()) &&
+				!fieldLevelJsonKeyValidation.mode().equals(jsonValidatorContext.getMode())) {
 					continue;
 			}
 			this.jsonProcessorUtil = new JsonProcessorUtil(property,JsonElementType.FIELD);
 			this.jsonProcessorUtil.setJsonValidatorContext(jsonValidatorContext);
-			if(currentInstance!=null && currentInstance.getClass().isAnnotationPresent(com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidator.class)) {
-				com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidator jsonKeyValidator = currentInstance.getClass().getAnnotation(com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidator.class);
-				jsonValidatorContext.setId(jsonKeyValidator.id());
+			if(currentInstance!=null && currentInstance.getClass().isAnnotationPresent(JsonKeyValidation.class)) {
+				JsonKeyValidation jsonKeyValidation = currentInstance.getClass().getAnnotation(JsonKeyValidation.class);
+				jsonValidatorContext.setId(jsonKeyValidation.id());
 			}
 			errors.addAll(jsonProcessorUtil.validate(currentInstance,  path + "." + property.getName(),jsonValidatorContext));
 			jsonValidatorContext.setParent(parent);

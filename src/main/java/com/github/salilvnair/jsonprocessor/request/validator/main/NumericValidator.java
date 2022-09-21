@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidation;
 import org.apache.commons.lang.math.NumberUtils;
 
 import com.github.salilvnair.jsonprocessor.request.context.JsonValidatorContext;
@@ -30,7 +31,7 @@ public class NumericValidator extends BaseJsonRequestValidator implements JsonKe
 			JsonValidatorContext jsonValidatorContext) {
 		List<ValidationMessage> errors = new ArrayList<ValidationMessage>();
 		Object columnValue = ReflectionUtil.getFieldValue(currentInstance, field.getName());
-		com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidator jsonFieldKeyValidator = field.getAnnotation(com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidator.class);
+		JsonKeyValidation jsonFieldKeyValidator = field.getAnnotation(JsonKeyValidation.class);
 		
 		boolean isFieldNumeric = false;
 		if(jsonFieldKeyValidator.numeric()){

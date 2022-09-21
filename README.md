@@ -23,13 +23,13 @@
 <dependency>
     <groupId>com.github.salilvnair</groupId>
     <artifactId>json-validator</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
 </dependency>
 ```
 
-> 2. Annotate a class or a field using  `@JsonKeyValidator ` , class should be implementing the marker interface named `JsonRequest `
+> 2. Annotate a class or a field using  `@JsonKeyValidation ` , class should be implementing the marker interface named `JsonRequest `
 ```java
-@JsonKeyValidator 
+@JsonKeyValidation 
 public class School implements JsonRequest {
    ....
 }
@@ -38,17 +38,17 @@ public class School implements JsonRequest {
 > 3. Set it as required, conditional, numeric, email erc.
 
 ```java
-@JsonKeyValidator(required=true, numeric=true)
+@JsonKeyValidation(required=true, numeric=true)
 private String id;
 ```
 
 ```java
-@JsonKeyValidator(conditional=true, condition="validateName")
+@JsonKeyValidation(conditional=true, condition="validateName")
 private String name;
 ```
 
 ```java
-@JsonKeyValidator(email=true)
+@JsonKeyValidation(email=true)
 private String email;
 ```
 
@@ -77,15 +77,15 @@ List<ValidationMessage>  validationMsgList  = JsonValidator.validate(school, jso
 ```
 ## Complete Usage:
 ```java
-@JsonKeyValidator(id="School", customTaskValidator=SchoolCustomTask.class)
+@JsonKeyValidation(id="School", customTaskValidator=SchoolCustomTask.class)
 public class School implements JsonRequest {
-	@JsonKeyValidator(required=true, message="User defined message!")
+	@JsonKeyValidation(required=true, message="User defined message!")
 	private long id;
-	@JsonKeyValidator(conditional=true, condition="validateAlumini")
+	@JsonKeyValidation(conditional=true, condition="validateAlumini")
 	private String name;
-	@JsonKeyValidator(required=true)
+	@JsonKeyValidation(required=true)
 	private HeadMaster headMaster;
-	@JsonKeyValidator(
+	@JsonKeyValidation(
 		required=true,
 		minItems=4,	
 		userDefinedMessages = {
@@ -96,7 +96,7 @@ public class School implements JsonRequest {
 				),
 				@UserDefinedMessage(
 						validatorType=ValidatorType.MINITEMS,
-						message="Minimum 4 students should be there at "+JsonKeyValidatorConstant.PATH_PLACEHOLDER,
+						message="Minimum 4 students should be there at "+JsonKeyValidationConstant.PATH_PLACEHOLDER,
 						messageType = MessageType.WARNING
 				)
 		}

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidator;
+import com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidation;
 import com.github.salilvnair.jsonprocessor.request.annotation.UserDefinedMessage;
 import com.github.salilvnair.jsonprocessor.request.annotation.ValidValues;
 import com.github.salilvnair.jsonprocessor.request.constant.JsonKeyValidatorConstant;
@@ -19,7 +19,7 @@ public abstract class BaseJsonRequestValidator {
 	public static final String EMPTY_STRING = "";
 	
 	public List<ValidationMessage> prepareFieldViolationMessage(Object currentInstance, JsonValidatorContext jsonValidatorContext,ValidatorType validatorType,Field field,List<ValidationMessage> errors, String path, String systemMsg) {
-		JsonKeyValidator jsonFieldKeyValidator = field.getAnnotation(JsonKeyValidator.class);
+		JsonKeyValidation jsonFieldKeyValidator = field.getAnnotation(JsonKeyValidation.class);
 		ValidationMessage validationMessage = new ValidationMessage();
 		validationMessage.setMessage(systemMsg);
 		validationMessage.setType(jsonFieldKeyValidator.messageType());
@@ -114,9 +114,9 @@ public abstract class BaseJsonRequestValidator {
 	}
 	
 	public String extractCurrentInstanceId(Object currentInstance) {
-		if(currentInstance!=null && currentInstance.getClass().isAnnotationPresent(JsonKeyValidator.class)) {
-			JsonKeyValidator jsonKeyValidator = currentInstance.getClass().getAnnotation(JsonKeyValidator.class);
-			return jsonKeyValidator.id();
+		if(currentInstance!=null && currentInstance.getClass().isAnnotationPresent(JsonKeyValidation.class)) {
+			JsonKeyValidation jsonKeyValidation = currentInstance.getClass().getAnnotation(JsonKeyValidation.class);
+			return jsonKeyValidation.id();
 		}
 		return null;
 	}

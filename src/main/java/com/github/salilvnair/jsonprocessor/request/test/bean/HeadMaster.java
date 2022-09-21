@@ -1,11 +1,11 @@
 package com.github.salilvnair.jsonprocessor.request.test.bean;
 
 import com.github.salilvnair.jsonprocessor.request.annotation.ConditionalValidValues;
-import com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidator;
+import com.github.salilvnair.jsonprocessor.request.annotation.JsonKeyValidation;
 import com.github.salilvnair.jsonprocessor.request.annotation.ValidValues;
 import com.github.salilvnair.jsonprocessor.request.core.JsonRequest;
 import com.github.salilvnair.jsonprocessor.request.test.task.HeadMasterTask;
-@JsonKeyValidator(id="HeadMaster",customTaskValidator=HeadMasterTask.class)
+@JsonKeyValidation(id="HeadMaster",customTaskValidator=HeadMasterTask.class)
 public class HeadMaster implements JsonRequest {
 	@ValidValues(
 			conditionalValue = {
@@ -14,10 +14,10 @@ public class HeadMaster implements JsonRequest {
 			},
 			showPredefinedValuesInMessage=true
 	)
-	@JsonKeyValidator(required=true,customTask="regulate",allowEmpty=true)
+	@JsonKeyValidation(required=true,customTask="regulate",allowEmpty=true)
 	private String name;
 	@ValidValues(value= {"10"}, range= {20, 101}, showPredefinedValuesInMessage=true)
-	@JsonKeyValidator(required=true,allowNull=true)
+	@JsonKeyValidation(required=true,allowNull=true)
 	private Integer age;
 
 	public String getName() {
