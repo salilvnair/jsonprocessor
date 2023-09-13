@@ -58,7 +58,7 @@ public class JsonPathBuilder {
   
   private boolean isArrayNodeOfData;
 
-  private List<String> arrayNodeConditions = new ArrayList<String>(5) {
+  private final List<String> arrayNodeConditions = new ArrayList<String>(5) {
   	private static final long serialVersionUID = 1L;
   	@Override
   	public String toString(){
@@ -88,7 +88,7 @@ public class JsonPathBuilder {
 	  	key = parameters[0];
 	}
   	if(key!=null){
-  		jsonPathExpressionString.append(JSON_PATH_EXPR_DOT+key);
+  		jsonPathExpressionString.append(JSON_PATH_EXPR_DOT).append(key);
   	}
   	else {
   		jsonPathExpressionString.append(JSON_PATH_EXPR_DOT);
@@ -116,7 +116,7 @@ public class JsonPathBuilder {
   	}
   	arrayNodeConditions.clear();
   	if(key!=null) {
-  		jsonPathExpressionString.append(JSON_PATH_EXPR_DOT+key+JSON_PATH_EXPR_SELECT_PLACEHOLDER);
+  		jsonPathExpressionString.append(JSON_PATH_EXPR_DOT).append(key).append(JSON_PATH_EXPR_SELECT_PLACEHOLDER);
   	}
   	else {
   		jsonPathExpressionString.append(JSON_PATH_EXPR_DOT+JSON_PATH_EXPR_SELECT_PLACEHOLDER);
@@ -129,11 +129,11 @@ public class JsonPathBuilder {
   		}  		
   	}
   	
-  	if(parameters.length>2 && parameters[2]!=null) {
-  		boolean arrayNodeInCondtion = (boolean) parameters[1];
-  		if(arrayNodeInCondtion) {
+  	if(parameters.length > 2 && parameters[1]!=null && parameters[2]!=null) {
+  		boolean arrayNodeInCondition = (boolean) parameters[1];
+  		if(arrayNodeInCondition) {
   			jsonPathExpressionString.setLength(0);
-  			jsonPathExpressionString.append(key+JSON_PATH_EXPR_SELECT_PLACEHOLDER);	
+  			jsonPathExpressionString.append(key).append(JSON_PATH_EXPR_SELECT_PLACEHOLDER);
   		}  		
   	}
   	  	
@@ -357,8 +357,7 @@ public class JsonPathBuilder {
 
   public String build() {
   	buildNode();
-  	String evaluatedExpression = this.jsonPathExpressionString.toString();
-  	return evaluatedExpression;
+	  return this.jsonPathExpressionString.toString();
   }
   
   public String build(boolean clearString) {

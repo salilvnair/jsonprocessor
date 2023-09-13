@@ -25,7 +25,7 @@ public class JsonPathUtil {
 	
 	protected final Log log = LogFactory.getLog(getClass());
 	
-	private Configuration configuration = getConfiguration();
+	private final Configuration configuration = getConfiguration();
 	
 	private ObjectMapper objectMapper;
 
