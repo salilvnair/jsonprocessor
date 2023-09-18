@@ -5,6 +5,6 @@ import com.github.salilvnair.jsonprocessor.rest.model.RestWebServiceResponse;
 
 import java.util.Map;
 
-public interface IRestWebServiceDelegate {
+public interface RestWebServiceDelegate {
     RestWebServiceResponse invoke(RestWebServiceRequest request, Map<String, Object> restWsMap, Object... objects);
 }

@@ -1,9 +1,8 @@
 package com.github.salilvnair.jsonprocessor.rest.facade;
 
-import com.github.salilvnair.jsonprocessor.request.core.JsonRequest;
 import com.github.salilvnair.jsonprocessor.rest.exception.RestWebServiceException;
-import com.github.salilvnair.jsonprocessor.rest.handler.IRestWebServiceDelegate;
-import com.github.salilvnair.jsonprocessor.rest.handler.IRestWebServiceHandler;
+import com.github.salilvnair.jsonprocessor.rest.handler.RestWebServiceDelegate;
+import com.github.salilvnair.jsonprocessor.rest.handler.RestWebServiceHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.salilvnair.jsonprocessor.rest.model.RestWebServiceRequest;
 import com.github.salilvnair.jsonprocessor.rest.model.RestWebServiceResponse;
@@ -20,7 +19,7 @@ public class RestWebServiceFacade {
 
     public static final String RESPONSE = "RESPONSE";
 
-    public void initiate(IRestWebServiceHandler handler, Map<String, Object> restWsMap, Object... objects) {
+    public void initiate(RestWebServiceHandler handler, Map<String, Object> restWsMap, Object... objects) {
         if(handler == null) {
             throw new RestWebServiceException("Cannot initiate webservice call without a proper handler class");
         }
@@ -31,7 +30,7 @@ public class RestWebServiceFacade {
                 printLogs(request, handler, REQUEST);
             }
         }
-        IRestWebServiceDelegate delegate = handler.delegate();
+        RestWebServiceDelegate delegate = handler.delegate();
         if(delegate == null) {
             throw new RestWebServiceException("Cannot initiate webservice call without a proper client delegate bean for the handler", handler.webServiceName());
         }
@@ -42,7 +41,7 @@ public class RestWebServiceFacade {
         handler.processResponse(request, response, restWsMap, objects);
     }
 
-    public void printLogs(Object requestResponse, IRestWebServiceHandler handler, String type) {
+    public void printLogs(Object requestResponse, RestWebServiceHandler handler, String type) {
         String webServiceName = handler.webServiceName();
         ObjectMapper mapper = new ObjectMapper();
         String jsonString = "{}";

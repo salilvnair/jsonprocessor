@@ -5,8 +5,8 @@ import com.github.salilvnair.jsonprocessor.rest.model.RestWebServiceResponse;
 
 import java.util.Map;
 
-public interface IRestWebServiceHandler {
-    IRestWebServiceDelegate delegate();
+public interface RestWebServiceHandler {
+    RestWebServiceDelegate delegate();
     RestWebServiceRequest prepareRequest(Map<String, Object> restWsMap, Object... objects);
     void processResponse(RestWebServiceRequest request, RestWebServiceResponse response, Map<String, Object> restWsMap, Object... objects);
     default String webServiceName() { return null; };
