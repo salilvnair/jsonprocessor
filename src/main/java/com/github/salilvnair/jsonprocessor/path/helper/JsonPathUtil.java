@@ -1,9 +1,6 @@
 package com.github.salilvnair.jsonprocessor.path.helper;
 
 import java.io.IOException;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.Configuration;
@@ -13,6 +10,8 @@ import com.jayway.jsonpath.Option;
 import com.jayway.jsonpath.TypeRef;
 import com.jayway.jsonpath.spi.json.JacksonJsonNodeJsonProvider;
 import com.jayway.jsonpath.spi.mapper.JacksonMappingProvider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * <b>JsonPathUtil</b> uses the jayway jsonpath library
@@ -23,7 +22,7 @@ import com.jayway.jsonpath.spi.mapper.JacksonMappingProvider;
 
 public class JsonPathUtil {
 	
-	protected final Log log = LogFactory.getLog(getClass());
+	protected final Logger log = LoggerFactory.getLogger(this.getClass());
 	
 	private final Configuration configuration = getConfiguration();
 	

@@ -6,14 +6,14 @@ import com.github.salilvnair.jsonprocessor.rest.handler.RestWebServiceHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.salilvnair.jsonprocessor.rest.model.RestWebServiceRequest;
 import com.github.salilvnair.jsonprocessor.rest.model.RestWebServiceResponse;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
 public class RestWebServiceFacade {
 
-    protected final Log logger = LogFactory.getLog(getClass());
+    protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     public static final String REQUEST = "REQUEST";
 
