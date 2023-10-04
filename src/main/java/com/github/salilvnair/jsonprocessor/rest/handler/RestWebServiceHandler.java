@@ -7,9 +7,9 @@ import java.util.Map;
 
 public interface RestWebServiceHandler {
     RestWebServiceDelegate delegate();
-    RestWebServiceRequest prepareRequest(Map<String, Object> restWsMap, Object... objects);
-    void processResponse(RestWebServiceRequest request, RestWebServiceResponse response, Map<String, Object> restWsMap, Object... objects);
-    default String webServiceName() { return null; };
-    default boolean printLogs() { return true; };
-    default boolean emptyPayLoad() { return false; };
+    default RestWebServiceRequest prepareRequest(Map<String, Object> restWsMap, Object... objects) {return null;}
+    default void processResponse(RestWebServiceRequest request, RestWebServiceResponse response, Map<String, Object> restWsMap, Object... objects) {}
+    default String webServiceName() { return null; }
+    default boolean printLogs() { return true; }
+    default boolean emptyPayLoad() { return false; }
 }
