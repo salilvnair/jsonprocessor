@@ -6,6 +6,8 @@ import com.github.salilvnair.jsonprocessor.rest.handler.RestWebServiceHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.salilvnair.jsonprocessor.rest.model.RestWebServiceRequest;
 import com.github.salilvnair.jsonprocessor.rest.model.RestWebServiceResponse;
+import com.github.salilvnair.jsonprocessor.rest.retry.RetryExecutor;
+import com.github.salilvnair.jsonprocessor.rest.retry.RetryExecutorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,7 +36,24 @@ public class RestWebServiceFacade {
         if(delegate == null) {
             throw new RestWebServiceException("Cannot initiate webservice call without a proper client delegate bean for the handler", handler.webServiceName());
         }
-        RestWebServiceResponse response = delegate.invoke(request, restWsMap, objects);
+        RestWebServiceResponse response = null;
+        if(delegate.retry()) {
+            RestWebServiceRequest finalRequest = request;
+            try {
+                 response =  new RetryExecutor()
+                                    .maxRetries(delegate.maxRetries())
+                                    .delay(delegate.delay(), delegate.delayTimeUnit())
+                                    .configure(delegate.whiteListedExceptions())
+                                    .execute(() -> delegate.invoke(finalRequest, restWsMap, objects));
+            }
+            catch (RetryExecutorException e) {
+                throw new RestWebServiceException(e, handler.webServiceName());
+            }
+        }
+        else {
+            response = delegate.invoke(request, restWsMap, objects);
+        }
+
         if(handler.printLogs()) {
             printLogs(response, handler, RESPONSE);
         }
