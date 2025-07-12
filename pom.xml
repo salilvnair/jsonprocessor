@@ -47,7 +47,7 @@
         <version.gson>2.8.9</version.gson>
         <version.slf4j>1.7.25</version.slf4j>
         <version.common-lang>2.6</version.common-lang>
-        <version.common-lang3>3.8.1</version.common-lang3>
+        <version.common-lang3>3.18.0</version.common-lang3>
         <version.common-collections4>4.4</version.common-collections4>
         <version.jsonpath>2.9.0</version.jsonpath>
         <maven.compiler.source>1.8</maven.compiler.source>
