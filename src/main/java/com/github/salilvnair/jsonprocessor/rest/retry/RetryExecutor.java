@@ -1,8 +1,9 @@
 package com.github.salilvnair.jsonprocessor.rest.retry;
 
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.math.NumberUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,7 +35,7 @@ public class RetryExecutor {
     public RetryExecutor maxRetries(String maxRetries) {
     	if(StringUtils.isNotEmpty(maxRetries)) {
     		maxRetries = maxRetries.trim();
-    		if(NumberUtils.isNumber(maxRetries)) {
+    		if(NumberUtils.isDigits(maxRetries)) {
                 this.maxRetries = Integer.parseInt(maxRetries);	
     		}
     	}    
@@ -44,7 +45,7 @@ public class RetryExecutor {
     public RetryExecutor delay(String delay, TimeUnit timeUnit) {
     	if(StringUtils.isNotEmpty(delay)) {
     		delay = delay.trim();
-            if(NumberUtils.isNumber(delay)) {
+            if(NumberUtils.isDigits(delay)) {
             	this.delay = timeUnit.toMillis(Integer.parseInt(delay));
             }
     	} 
